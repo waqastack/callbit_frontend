@@ -1,0 +1,817 @@
+<app-header></app-header>
+<div class="container">
+  <ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>
+  <div class="row mt-4">
+    <div class="offset-lg-2 col-lg-9">
+      <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]=""
+               (click)="navigateMainTab(1)"
+               [ngClass]="
+                navigationValue == 'View Posted Campaigns' ? 'active' : ''
+              ">
+              View Posted Campaigns
+            </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a [routerLink]=""
+               (click)="navigateMainTab(2)"
+               [ngClass]="navigationValue == 'Invite' ? 'active' : ''">
+              Invite
+            </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a [routerLink]=""
+               (click)="navigateMainTab(3)"
+               [ngClass]="navigationValue == 'Proposals Review' ? 'active' : ''">
+              Proposals Review ({{ proposalResponse.length }})
+            </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a [routerLink]=""
+               (click)="navigateMainTab(4)"
+               [ngClass]="navigationValue == 'Hire' ? 'active' : ''">
+              Hire ({{ countProposal }})
+            </a>
+          </li>
+          <!--<li class="breadcrumb-item">
+            <a [routerLink]="" (click)="navigateMainTab(5)"
+               [ngClass]="navigationValue=='Earning'?'active':''">
+              Earning
+              <span style="background-color:darkred" class="badge badge-danger">{{countEarnNoti}}</span>
+            </a>
+          </li>-->
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!-- Detail Of Compaign -->
+  <div class="row mt-2" *ngIf="navigationValue == 'View Posted Campaigns'">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="bg-white card-header d-flex py-3">
+          <h4 class="mb-0 text-primary fw-bold">Campaign Details</h4>
+
+        </div>
+        <div class="card-body px-0">
+          <div class="card card-campaign">
+            <div class="card-header d-flex bg-white border-0 px-0 pb-0">
+              <h5 class="text-primary mb-0 fw-bold">
+                {{ compaignResponse.name }}
+              </h5>
+              <div class="small ms-auto">
+                <i class="fas fa-map-marker-alt text-primary"></i>
+                {{compaignResponse.location==undefined?'':compaignResponse.location}}
+              </div>
+            </div>
+            <div class="card-body px-0">
+              <p class="text-muted">
+                Posted On
+                {{ compaignResponse.createdDate | date: "EEEE, MMMM d, h:mm" }}
+                {{ compaignResponse.createdDate | date: "a" | lowercase }}
+              </p>
+            </div>
+          </div>
+          <div class="card card-campaign">
+            <div class="card-header bg-white border-0 px-0 pb-0">
+              <h5 class="text-primary mb-4 fw-bold">Description</h5>
+              <p [(innerHtml)]="compaignResponse.description">
+                {{ compaignResponse.description || "N/A" }}
+              </p>
+            </div>
+          </div>
+
+          <div class="card card-campaign"
+               *ngIf="compaignResponse.questions?.length > 0">
+            <div class="card-header bg-white border-0 px-0 pb-0">
+              <h5 class="text-primary mb-4 fw-bold">Questions</h5>
+              <p *ngFor="let ques of compaignResponse.questions; let i = index">
+                {{ i + 1 }}. {{ ques.question }}
+              </p>
+            </div>
+          </div>
+          <div class="card card-campaign">
+            <div class="card-header bg-white border-0 px-0 pb-0">
+              <h5 class="text-primary mb-4 fw-bold">
+                {{ compaignResponse.payByText || "N/A" }}
+              </h5>
+              <p>
+                {{ compaignResponse.payByText || "N/A" }} to scale up your
+                Campaign Up and down
+              </p>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="d-flex mb-2">
+                    <div class="me-3">
+                      <i class="fas fa-check-circle text-secondary"></i>
+                      <span class="text-muted">
+                        {{
+                        compaignResponse.payPerText || "N/A"
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                  <p class="small text-muted">Campaign Length</p>
+                </div>
+                <div class="col-md-4">
+                  <div class="d-flex mb-2">
+                    <div class="me-3">
+                      <i class="fas fa-check-circle text-secondary"></i>
+                      <span class="text-muted">
+                        {{compaignResponse.compaignDuration}}
+                      </span>
+                    </div>
+                  </div>
+                  <p class="small text-muted">Time Duration</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-campaign">
+            <div class="card-header bg-white border-0 px-0 pb-0">
+              <div class="row">
+                <div class="col-md-4">
+                  <h5 class="text-primary mb-2 fw-bold">Sale Price</h5>
+                  <h4 class="text-primary">${{ compaignResponse.price }}</h4>
+                </div>
+                <div class="col-md-4">
+                  <h5 class="text-primary mb-2 fw-bold">Sales Required</h5>
+                  <h4 class="text-primary">{{ compaignResponse.sale }}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-campaign border-0">
+            <div class="card-header bg-white border-0 px-0 pb-0">
+              <h5 class="text-primary mb-4 fw-bold">Campaign Types</h5>
+              <ul class="list-unstyled seleted-option text-start mb-0">
+                <li *ngFor="let p of skillsKeyword">{{ p }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Invite View -->
+  <div class="row mt-2" *ngIf="navigationValue == 'Invite'">
+    <div class="col-lg-3">
+      <div class="card">
+        <div class="card-header">
+          Filter By
+        </div>
+        <div class="card-body">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="nameCallCenter" class="form-control mb-3" />
+          <label>Title</label>
+          <input type="text" [(ngModel)]="title" class="form-control mb-3" />
+          <label>Tag</label>
+          <input type="text" [(ngModel)]="tag" class="form-control" />
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <input type="button" class="btn btn-primary" (click)="GetInvitedWorker()" value="Apply" />
+          <input type="button" class="btn btn-primary" (click)="Reset()" value="Reset" />
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <div class="card">
+        <div class="card-body nav-campaign p-0">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Search</button>
+            </li>
+
+          </ul>
+          <div class="tab-content py-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="card card-campaign">
+                <div class="input-group inner-main-search">
+                  <input type="text" class="form-control" placeholder="Search Your Call Center"
+                         name="search" [(ngModel)]="searchText" autocomplete="off"
+                         aria-label="Recipient's username" aria-describedby="basic-addon2">
+                  <span class="input-group-text bg-secondary text-white cursor-pointer px-4" id="basic-addon2"><i class="fas fa-search fa-lg"></i></span>
+                </div>
+                <!-- <a [routerLink]="" (click)="InviteCoworkers()" class="mt-2">Advanced Search</a> -->
+              </div>
+
+              <div class="card card-campaign" *ngFor="let p of (inviteResponse | filter:searchText) | paginate:config_InviteWorkerList">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="card-header d-flex bg-white border-0 px-0 pb-0">
+                      <img [src]="p.userImage" width="60" height="60" />
+                      <div class="ms-4">
+                        <h5 class="text-primary mb-0 fw-bold cursor-pointer campaign-heading" (click)="ProfilePopup(p)">{{p.coworkerName}}</h5>
+                        <small>{{p.designation}}</small>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="col-md-4" style="margin-top:12px">
+                    <div class="d-flex mb-3" *ngIf="!p.invitationStatus">
+                      <button style="margin-left:auto" class="btn btn-outline-primary me-2" (click)="SendInvitation(p)">Invite</button>
+                      <!--<button class="btn btn-primary" (click)="ReviewPopupOpen(proposal)">Hire</button>-->
+                    </div>
+                    <div class="d-flex mb-3" *ngIf="p.invitationStatus=='Accept'">
+                      <button class="btn btn-primary" (click)="openMessages()" style="margin-left:auto">
+                        Message
+                      </button>
+                    </div>
+                    <div class="d-flex mb-3" *ngIf="p.invitationStatus=='Sended'">
+                      <button class="btn btn-primary" style="margin-left:auto">
+                        Invited
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="" *ngIf="inviteResponse.length>0">
+                <pagination-controls class="custom-pagination dialog-pagination" id="pg_Worker"
+                                     (pageChange)="onPageChanged($event)" directionLinks="false"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Proposal Review -->
+  <div class="row mt-2" *ngIf="navigationValue == 'Proposals Review'">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body nav-campaign p-0">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active"
+                      id="home-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#home"
+                      type="button"
+                      role="tab"
+                      aria-controls="home"
+                      aria-selected="true">
+                All Proposals ({{ proposalResponse.length }})
+              </button>
+            </li>
+            <!-- <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="profile-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#profile"
+                type="button"
+                role="tab"
+                aria-controls="profile"
+                aria-selected="false"
+              >
+                Shortlisted (0)
+              </button>
+            </li> -->
+            <!-- <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="contact-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#contact"
+                type="button"
+                role="tab"
+                aria-controls="contact"
+                aria-selected="false"
+              >
+                Messaged (1)
+              </button>
+            </li> -->
+            <!-- <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="feedback-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#feedback"
+                type="button"
+                role="tab"
+                aria-controls="feedback"
+                aria-selected="false"
+              >
+                Archived (0)
+              </button>
+            </li> -->
+          </ul>
+          <div class="tab-content py-3" id="myTabContent">
+            <div class="tab-pane fade show active"
+                 id="home"
+                 role="tabpanel"
+                 aria-labelledby="home-tab">
+              <div class="card card-campaign">
+                <div class="input-group inner-main-search">
+                  <input type="text"
+                         class="form-control"
+                         placeholder="Search Proposals Worker"
+                         name="search"
+                         [(ngModel)]="searchTextProposal"
+                         autocomplete="off"
+                         aria-label="Recipient's username"
+                         aria-describedby="basic-addon2" />
+                  <span class="
+                      input-group-text
+                      bg-secondary
+                      text-white
+                      cursor-pointer
+                      px-4
+                    "
+                        id="basic-addon2">
+                    <i class="fas fa-search fa-lg"></i>
+                  </span>
+                </div>
+                <!-- <a [routerLink]="" (click)="InviteCoworkers()" class="mt-2">Advanced Search</a> -->
+              </div>
+              <ng-container *ngIf="visibleProposalReview">
+              <div class="card card-campaign"
+                   *ngFor="let proposal of proposalResponse | filter: searchTextProposal">
+                <div class="
+                    card-header
+                    d-flex
+                    bg-white
+                    border-0
+                    px-0
+                    pb-0
+                    justify-content-between
+                  ">
+                  <div class="row">
+                    <h5 class="text-primary mb-0 fw-bold" (click)="ProfileProposalPopup(proposal)">
+                      {{ proposal.coworkerName }}
+                    </h5>
+                    <small>{{ proposal.designation }}</small>
+                  </div>
+
+                </div>
+                <div class="d-flex mb-3" *ngIf="proposal.proposalStatus=='Accepted'">
+                  <button class="btn btn-outline-primary me-2"
+                          (click)="openMessages()">
+                    Message
+                  </button>
+                  <button class="btn btn-outline-primary me-2"
+                          (click)="ProfileProposalPopup(proposal)">
+                    Detail
+                  </button>
+                  <button class="btn btn-outline-primary me-2"
+                          (click)="ProposalOpen(proposal)">
+                    View Proposal
+                  </button>
+                  <button class="btn btn-primary"
+                          (click)="ReviewPopupOpen(proposal)">
+                    Hire
+                  </button>
+                </div>
+
+                <div class="d-flex mb-3" *ngIf="proposal.proposalStatus=='Pending'">
+                  <button class="btn btn-outline-danger me-2"
+                          (click)="updateProposalStatus('Rejected',proposal)">
+                    Reject
+                  </button>
+                  <button class="btn btn-primary"
+                          (click)="updateProposalStatus('Accepted',proposal)">
+                    Accept
+                  </button>
+                  <button class="btn btn-outline-primary me-2"
+                          (click)="ProfileProposalPopup(proposal)">
+                    Detail
+                  </button>
+                  <button class="btn btn-outline-primary me-2"
+                  (click)="ProposalOpen(proposal)">View Proposal
+                  </button>
+                </div>
+              </div>
+              </ng-container>
+              <div class="card card-campaign" *ngIf="!visibleProposalReview">
+                <p style="color:red">No Record Found</p>
+              </div>
+            </div>
+            <div class="tab-pane fade"
+                 id="profile"
+                 role="tabpanel"
+                 aria-labelledby="profile-tab">
+              <div class="card-body">Empty</div>
+            </div>
+            <div class="tab-pane fade"
+                 id="contact"
+                 role="tabpanel"
+                 aria-labelledby="contact-tab">
+              <div class="card-body">Empty</div>
+            </div>
+            <div class="tab-pane fade"
+                 id="feedback"
+                 role="tabpanel"
+                 aria-labelledby="feedback-tab">
+              <div class="card-body">Empty</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Hire -->
+  <div class="row mt-2" *ngIf="navigationValue == 'Hire'">
+    <div class="col-lg-2">
+      <!-- <ul class="list-unstyled main-left-list">
+        <li>
+          <a [routerLink]="" (click)="InviteCoworkers()" class="active"
+            >My Feeds</a
+          >
+        </li>
+        <li><a [routerLink]="" (click)="InviteCoworkers()">Best Maches</a></li>
+      </ul> -->
+    </div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body nav-campaign p-0">
+          <div class="tab-content py-3" id="myTabContent">
+            <div class="tab-pane fade show active"
+                 id="home"
+                 role="tabpanel"
+                 aria-labelledby="home-tab">
+              <div class="card card-campaign">
+                <div class="input-group inner-main-search">
+                  <input type="text"
+                         class="form-control"
+                         placeholder="Search Hired Worker"
+                         name="search"
+                         [(ngModel)]="searchTextProposal"
+                         autocomplete="off"
+                         aria-label="Recipient's username"
+                         aria-describedby="basic-addon2" />
+                  <span class="
+                      input-group-text
+                      bg-secondary
+                      text-white
+                      cursor-pointer
+                      px-4
+                    "
+                        id="basic-addon2">
+                    <i class="fas fa-search fa-lg"></i>
+                  </span>
+                </div>
+                <!-- <a [routerLink]="" (click)="InviteCoworkers()" class="mt-2"
+                  >Advanced Search</a
+                > -->
+              </div>
+              <div class="card card-campaign">
+                <div class="d-md-flex align-items-center">
+                  <div>
+                    <h5 class="mb-1 fw-bold">Hired workers list</h5>
+                    <p class="mb-0">Let them help you find</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card card-campaign"
+                   *ngFor="let hirelst of clientHiredRsp" >
+                <div class="
+                    card-header
+                    d-flex
+                    bg-white
+                    border-0
+                    px-0
+                    pb-0
+                    justify-content-between
+                  ">
+                  <div>
+                    <h5 class="text-primary mb-0 fw-bold" (click)="ProfileHiredPopup(hirelst)">
+                      {{ hirelst.clientName }}
+                    </h5>
+                    <small>{{ hirelst.designation }}</small>
+
+                    <p class="fw-bold">{{ hirelst.compaignName }}</p>
+                  </div>
+                  <div>
+
+                    <button (click)="openContract()" class="btn btn-primary me-2">
+                      Go To Contract
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--PopUp Review Contract-->
+  <div class="popup">
+    <!-- <a href="javascript:void(0)" class="btn btn-outline-primary" data-toggle="modal" data-target="#basicModal">Compaign Detail</a> -->
+    <!-- modal -->
+    <div class="modal fade"
+         id="ReviewModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="basicModal"
+         aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content" style="width: 740px">
+          <button type="button"
+                  class="close"
+                  (click)="ReviewModalClose()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="body-content">
+            <div class="card">
+              <div class="bg-white card-header d-flex py-3 align-items-center">
+                <h4 class="mb-0 text-primary fw-bold">Terms</h4>
+
+              </div>
+              <div class="card-body px-0">
+                <div class="px-3">
+                  <div class="row" *ngIf="compaignEditable.payByText">
+                    <div class="col-md-3">
+                      <input type="text"
+                             placeholder="Pay By Text"
+                             [(ngModel)]="compaign.payByText"
+                             class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                      <input type="text"
+                             placeholder="Pay Per Text"
+                             [(ngModel)]="compaign.payPerText"
+                             class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                      <a class="btn btn-primary" (click)="updateCompaignInfo('Pay')"
+                         *ngIf="compaignEditable.payByText" type="button">Update</a>
+                      <a class="btn btn-outline-primary" (click)="cancelUpdate('Pay')"
+                         *ngIf="compaignEditable.payByText" type="button">Cancel</a>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!compaignEditable.payByText">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h5 class="fw-bold mb-3"
+                          *ngIf="compaignResponse.payByText != null">
+                        {{ compaignResponse.payByText }}
+                      </h5>
+
+                      <h5 class="fw-bold mb-3"
+                          *ngIf="compaignResponse.payByText == null">
+                        Pay By Text(xxx)
+                      </h5>
+                      <div class="edit-des bg-light">
+                        <i class="fas fa-pencil-alt text-primary cursor-pointer"
+                           (click)="editable('Pay')"></i>
+                      </div>
+                    </div>
+                    <p class="fw-bold"
+                       *ngIf="compaignResponse.payByText == null">
+                      Pay Per Text(xxx)
+                    </p>
+                    <p class="fw-bold"
+                       *ngIf="compaignResponse.payByText != null">
+                      {{ compaignResponse.payPerText }}
+                    </p>
+                  </div>
+                  <div class="row" *ngIf="compaignEditable.title">
+                    <div class="col-md-6">
+                      <input type="text"
+                             class="form-control"
+                             [(ngModel)]="compaign.title"
+                             placeholder="Title" />
+                    </div>
+                    <div class="col-md-6">
+                      <a class="btn btn-primary" (click)="updateCompaignInfo('title')"
+                         *ngIf="compaignEditable.title" type="button">Update</a>
+                      <a class="btn btn-outline-primary" (click)="cancelUpdate('title')"
+                         *ngIf="compaignEditable.title" type="button">Cancel</a>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!compaignEditable.title">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fw-bold">Title of the Compaign</p>
+                      <div class="edit-des bg-light">
+                        <i class="fas fa-pencil-alt text-primary cursor-pointer"
+                           (click)="editable('title')"></i>
+                      </div>
+                    </div>
+                    <p>{{ compaignResponse.title }}</p>
+                  </div>
+                  <div class="row" *ngIf="compaignEditable.desc">
+                    <div class="col-md-6">
+                      <textarea placeholder="Description..."
+                                [(ngModel)]="compaign.description"
+                                class="form-control"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                      <a class="btn btn-primary" (click)="updateCompaignInfo('desc')"
+                         *ngIf="compaignEditable.desc" type="button">Update</a>
+                      <a class="btn btn-outline-primary" (click)="cancelUpdate('desc')"
+                         *ngIf="compaignEditable.desc" type="button">Cancel</a>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!compaignEditable.desc">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fw-bold">Description</p>
+                      <div class="edit-des bg-light">
+                        <i class="fas fa-pencil-alt text-primary cursor-pointer"
+                           (click)="editable('desc')"></i>
+                      </div>
+                    </div>
+                    <p [(innerHtml)]="compaignResponse.description">
+                      {{ compaignResponse.description }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="border-y p-3">
+                  <p class="fw-bold">What Compaigns You Have?</p>
+                  <ul class="list-unstyled seleted-option text-start mb-0">
+                    <li *ngFor="let typeDesc of splitCompaignType(compaignResponse.type)">
+                      {{ typeDesc }}
+                    </li>
+                  </ul>
+                </div>
+                <div class="px-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <p class="fw-bold">Your Sales Rates</p>
+                    <div class="edit-des bg-light">
+                      <i (click)="editable('price')"
+                         class="fas fa-pencil-alt text-primary cursor-pointer"></i>
+                    </div>
+                  </div>
+                  <div class="row"
+                       *ngIf="compaignEditable.sale && compaignEditable.price">
+                    <div class="col-md-3">
+                      <input placeholder="Sale Price"
+                             class="form-control rounded"
+                             [(ngModel)]="compaign.sale"
+                             type="text" />
+                    </div>
+                    <div class="col-md-3">
+                      <input placeholder="Price"
+                             class="form-control rounded"
+                             [(ngModel)]="compaign.price"
+                             type="text" />
+                    </div>
+                    <div class="col-md-6">
+                      <a class="btn btn-primary me-2" (click)="updateCompaignInfo('price')"
+                         *ngIf="compaignEditable.price" type="button">Update</a>
+                      <a class="btn btn-outline-primary" (click)="cancelUpdate('price')"
+                         *ngIf="compaignEditable.price" type="button">Cancel</a>
+                    </div>
+                  </div>
+                  <div class="row"
+                       *ngIf="!compaignEditable.sale && !compaignEditable.price">
+                    <div *ngIf="compaignResponse.payByText == 'Pay By the Sales'"
+                         class="col-md-6">
+                      <p class="fw-bold mb-1">Sales</p>
+                      <p>
+                        {{ compaignResponse.sale }}
+                      </p>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="fw-bold mb-1">Price</p>
+                      <p *ngIf="compaignResponse.payByText == 'Pay By the Sales'">
+                        {{ compaignResponse.price }}
+                      </p>
+
+                      <p *ngIf="compaignResponse.payByText == null">0.00</p>
+                      <p *ngIf="
+                          compaignResponse.payByText == 'Pay By the Fix Price'
+                        ">
+                        {{ compaignResponse.price }}
+                      </p>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="fw-bold mb-1">Total Price of Compaign</p>
+                      <p *ngIf="compaignResponse.payByText == 'Pay By the Sales'">
+                        {{ compaignResponse.totalAmount }}
+                      </p>
+                      <p *ngIf="compaignResponse.payByText == null">0.00</p>
+                      <p *ngIf="
+                          compaignResponse.payByText == 'Pay By the Fix Price'
+                        ">
+                        {{ compaignResponse.price }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="px-3">
+                  <div class="row" *ngIf="compaignEditable.compaignDuration">
+                    <div class="col-md-6">
+                      <input type="text"
+                             placeholder="How Long do you expect this Compaign to last?"
+                             [(ngModel)]="compaign.compaignDuration"
+                             class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                      <a class="btn btn-primary me-2" (click)="updateCompaignInfo('compaignDuration')"
+                         *ngIf="compaignEditable.compaignDuration" type="button">Update</a>
+                      <a class="btn btn-outline-primary" (click)="cancelUpdate('compaignDuration')"
+                         *ngIf="compaignEditable.compaignDuration" type="button">Cancel</a>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!compaignEditable.compaignDuration">
+                    <div class="col-md-6">
+                      <div class="
+                          d-flex
+                          justify-content-between
+                          align-items-center
+                        ">
+                        <p class="fw-bold">
+                          How Long do you expect this Compaign to last?
+                        </p>
+                        <div class="edit-des bg-light">
+                          <i class="
+                              fas
+                              fa-pencil-alt
+                              text-primary
+                              cursor-pointer
+                            "
+                             (click)="editable('compaignDuration')"></i>
+                        </div>
+                      </div>
+                      {{ compaignResponse.compaignDuration }}
+                      <div class="border-y p-3"
+                           *ngIf="compaignResponse.compaignDuration == null">
+                        <p>xxx</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-3 px-3 mb-2 buttons-end">
+                  <a class="btn btn-primary" (click)="openPaymentModalPopup()" type="button">Hire</a>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Popup Payment Method-->
+  <!-- Billing-payment Modal -->
+  <div class="modal fade" id="Billing-payment-details" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="Billing-payment" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Payment Details</h5>
+          <button type="button" class="btn-close" (click)="paymentModalPopupClose()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+            <!-- <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Card Number</label>
+                <input type="text" class="form-control" [(ngModel)]="payment.cardNumber"
+                       maxlength="16" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Expiry Month</label>
+                <input placeholder="MM" type="text" [(ngModel)]="payment.expiryMonth" maxlength="2" required class="form-control">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Expiry Year</label>
+                <input placeholder="YYYY" type="text" [(ngModel)]="payment.expiryYear" maxlength="4" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">cvc</label>
+                <input placeholder="cvc" type="text" [(ngModel)]="payment.cvc" maxlength="3" required class="form-control">
+              </div>
+            </div> -->
+            <form #checkout="ngForm" (ngSubmit)="onSubmit(checkout)" class="checkout">
+              <div class="form-row">
+                <label for="card-info">Card Info</label>
+                <div id="card-info" #cardInfo></div>
+
+                <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
+              </div>
+              <button type="submit">Pay {{payment.amount}}$</button>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <p style="margin-right:auto"><b>Note: </b>3 percent will be detucted by CallBit</p>
+          <button type="button" class="btn btn-outline-primary" (click)="paymentModalPopupClose()" data-bs-dismiss="modal">Close</button>
+
+          <!--<button type="button" class="btn btn-primary" (click)="postPayment()">
+    Pay {{payment.value}}$
+  </button>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

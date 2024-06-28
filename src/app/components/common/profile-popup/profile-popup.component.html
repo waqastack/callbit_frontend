@@ -1,0 +1,115 @@
+  <!-- Modal Start -->
+
+  <div class="modal-header " >
+    <div class="profile-pic me-3 mb-3 mb-md-0">
+      <img [src]="profilePicture" />
+      <i class="fas fa-circle text-secondary online"></i>
+    </div>
+    <div class="mb-3 mb-md-0">
+      <h2 class="text-primary fw-bold">
+        {{ profileViewerReq.coworkerName }}
+      </h2>
+      <div class="me-3 small">
+        <i class="fas fa-map-marker-alt text-primary me-1"></i>
+        Designation:  {{profileViewerReq.designation}}
+        <ng-container>
+          <div class="ratings">
+            <rating [max]="max" [readonly]="true" [(ngModel)]="rate"></rating>
+          </div>
+          <b>(<i>Avg Rate: </i>{{avgRateStar}})</b>
+        </ng-container>
+      </div>
+
+    </div>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card card-campaign">
+      <div class="card-header  bg-white border-0 px-0 pb-0">
+        <h5 class="text-primary fw-bold">Expertise</h5>
+        <p>
+          {{ profileViewerReq.favUserTechn }}
+        </p>
+      </div>
+    </div>
+    <div class="card card-campaign">
+      <div class="card-header bg-white border-0 px-0 pb-0">
+        <h5 class="text-primary fw-bold">Sitting Capacity</h5>
+        <p>
+          {{ profileViewerReq.sittingCapacity }}
+        </p>
+      </div>
+    </div>
+    <div class="card card-campaign" *ngIf="_portfolioInfoo.length>0">
+      <div class="card-header bg-white border-0 px-0 pb-0">
+        <h5 class="text-primary fw-bold">PortFolio</h5>
+        <div class="row">
+          <div class="col-md-4" *ngFor="let item of _portfolioInfoo;let index=index;">
+            <div class="file-upload file mb-3" id="{{index+1}}"
+                 [ngStyle]="{'border': item.portFolioID==_portFolioSelectedID ? '3px solid blue' : '' }"
+                 (click)="PortFolioSelected(item.portFolioID)">
+              <img [src]="item.portFolioPath"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card card-campaign">
+      <div class="card-header bg-white border-0 px-0 pb-0">
+        <h5 class="text-primary fw-bold">Description Details :</h5>
+        <p [(innerHtml)]="profileViewerReq.description">
+          {{ profileViewerReq.description }}
+        </p>
+      </div>
+    </div>
+    <div class="card card-campaign" *ngIf="profileViewerReq.clientRecive">
+      <div class="card-header bg-white border-0 px-0 pb-0">
+        <h5 class="text-primary fw-bold">Total Amount Demand:</h5>
+        <p>
+          {{ profileViewerReq.clientRecive }}
+        </p>
+      </div>
+    </div>
+    <div class="card card-campaign pt-3" *ngIf="profileViewerReq.proposalStatus">
+      <h5 class="text-primary fw-bold">Proposal Status :</h5>
+      <p>
+        {{ profileViewerReq.proposalStatus }}
+      </p>
+    </div>
+    <div class="card card-campaign pt-3" *ngIf="profileViewerReq.salesRate">
+      <h5 class="text-primary fw-bold">Sales Rate:</h5>
+      <p>
+        {{ profileViewerReq.salesRate }}
+      </p>
+    </div>
+    <div class="card card-campaign pt-3" *ngIf="profileViewerReq.numberofSales">
+      <h5 class="text-primary fw-bold">No Of Sale :</h5>
+      <p>
+        {{ profileViewerReq.numberofSales }}
+      </p>
+    </div>
+    <div class="card card-campaign pt-3" *ngIf="profileViewerReq.coverLetter">
+      <h5 class="text-primary fw-bold">Cover Letter</h5>
+      <p class="mb-0" [innerHtml]="profileViewerReq.coverLetter">
+        {{profileViewerReq.coverLetter}}
+      </p>
+    </div>
+  
+    <!--<div class="card card-campaign pt-3">
+      <h5 class="text-primary fw-bold">Answers</h5>
+      <div class="mb-0">
+        <div *ngFor="let a of profileViewerReq.answers;let i =index">
+          {{i+1}}. {{a.answer}}
+        </div>
+      </div>
+    </div>-->
+  
+  
+  </div>
+    <div class="modal-footer">
+  
+      <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">Close</button>
+    </div>
+    <!-- Modal End -->

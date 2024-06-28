@@ -1,0 +1,382 @@
+<app-header></app-header>
+<div class="inner-section">
+  <ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>
+  <div class="container">
+
+    <div class="row mt-4">
+      <div class="col-lg-2">
+        <ul class="list-unstyled main-left-list">
+          <li><a class="active">My Feeds</a></li>
+          <!-- <li><a>Best Maches</a></li> -->
+        </ul>
+      </div>
+      <div class="col-lg-8">
+        <div class="input-group inner-main-search">
+          <input type="text"
+                 class="form-control"
+                 placeholder="Search campaign"
+                 name="search"
+                 [(ngModel)]="searchCompaign"
+                 autocomplete="off"
+                 aria-label="Recipient's username"
+                 aria-describedby="basic-addon2" />
+          <span class="
+                      input-group-text
+                      bg-secondary
+                      text-white
+                      cursor-pointer
+                      px-4
+                    "
+                id="basic-addon2">
+            <i class="fas fa-search fa-lg"></i>
+          </span>
+        </div>
+        &nbsp;  &nbsp; &nbsp; &nbsp;
+        <div class="card" *ngIf="compaign.length>0">
+          <div class="bg-white card-header d-flex py-3">
+            <h4 class="mb-0 text-primary fw-bold">Available Campaign</h4>
+
+          </div>
+          <div class="card-body px-0">
+            <div *ngFor="let i of pageOfItems | filter: searchCompaign; let index = index"
+                 class="card card-campaign">
+              <div class="card-header d-flex bg-white border-0 px-0 pb-0">
+                <h5 class="text-primary mb-0 fw-bold cursor-pointer campaign-heading"
+                   
+                    (click)="DetailCompaign(i.id)">
+                  {{ i.name }}
+                </h5>
+
+              </div>
+              <div class="card-body px-0">
+                <p class="text-muted">
+                  Budget : {{ i.totalAmount }}$ &nbsp; &nbsp; &nbsp; &nbsp; Posted On :
+                  {{ i.createdDate | date: "EEEE, MMMM d, h:mm" }}
+                  {{ i.createdDate | date: "a" | lowercase }}
+                </p>
+
+
+                <p>   <app-read-more 
+                  [content]="i.description"
+                  [limit]="300"
+                  [completeWords]="true">
+   </app-read-more></p>
+                <ul *ngIf="i.type"
+                    class="list-unstyled seleted-option text-start mb-0">
+                  <li *ngFor="let typeDesc of splitCompaignType(i.type)">
+                    {{ typeDesc }}
+                  </li>
+                </ul>
+                <p class="text-muted">Proposals Submitted : <b>{{ i.noOfProposals}}</b></p>
+                <div class="d-flex">
+                  <div class="me-3 small">
+                    <i class="fas fa-check-circle text-secondary"></i>
+                    Payment Verified
+                  </div> 
+
+                  <div class="me-3 small">
+                    <i class="fas fa-map-marker-alt text-primary"></i>
+                    {{i.location}}
+                  </div>
+                  <!-- <div class="me-3 small" *ngIf="i.inbound">
+                    <i class="fa fa-check" style="color:green" aria-hidden="true"></i>
+                    Inbound
+                  </div>
+                  <div class="me-3 small" *ngIf="i.outbound">
+                    <i class="fa fa-check" style="color:green" aria-hidden="true"></i>
+                    Outbound
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer pb-0 pt-3">
+            <jw-pagination [items]="compaign" (changePage)="onChangePage($event)"></jw-pagination>
+          </div>
+        </div>
+        <div *ngIf="compaign.length==0">
+          <br />
+          <label style="color:red">No Record Found</label>
+        </div>
+      </div>
+      <div class="col-lg-2">
+
+
+
+        <p class="text-muted fw-bold mt-5 pt-2">Proposals</p>
+        <table class="list-unstyled text-primary proposals-list">
+          <tr *ngFor="let g of gservice.list">
+            <td>{{ g.submitted_proposals }}</td>
+            <td></td>
+            <td>submitted Proposals</td>
+          </tr>
+          <tr *ngFor="let g of gservice.list">
+            <td>{{ g.available_proposals }}</td>
+            <td></td>
+            <td>Available proposals</td>
+          </tr>
+          <!-- <tr><td> <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Billing-payment" type="button">Purchase Proposals</button></td></tr> -->
+          <!-- <tr><td>  <a routerLink="/Member"
+            class="btn btn-outline-primary ms-auto btn-sm" type="button">Buy Propopsal</a></td></tr> -->
+          <tr *ngIf="this.pflag">
+            <td>
+              <button type="button"
+                      routerLink="/Member"
+                      class="btn btn-outline-primary ms-auto btn-sm">
+                Buy Propopsal
+              </button>
+            </td>
+          </tr>
+        </table>
+        <!-- <ul class="list-unstyled text-primary proposals-list">
+          <li><a>8 submitted Proposals</a></li>
+          <li><a>2 Available proposals</a></li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Start -->
+
+  <div class="modal fade" id="detailCompaignModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="basicModal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Campaign Detail</h5>
+          
+         
+          <button type="button" class="btn-close" (click)="CompaignModalClose()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body px-0">
+
+          <div class="card card-campaign">
+            <div class="card-header  bg-white border-0 px-0 pb-0 pt-0">
+              <div class="d-flex align-items-center">
+                <div *ngIf="existProposal" class="submited_proposal d-flex"> 
+                  <span class="me-2">Already submitted</span>
+                  <a href="javascript:void(0)" (click)="ViewProposal()"><i class="fas fa-check-circle me-1"></i>View Proposal</a>
+                </div>
+                <button type="button" class="btn btn-primary ms-auto"
+                (click)="openProfile()">
+          View Client Profile
+        </button>
+              </div>
+            
+             
+            </div>
+            
+          </div>
+          
+
+          <form class="needs-validation" novalidate="">
+
+            <div class="card card-campaign">
+              <div class="card-header  bg-white border-0 px-0 pb-0">
+                <h5 class="text-primary mb-0 fw-bold">
+                  {{ _compaign.name }}
+                </h5>
+              
+                <!-- <div class="align-items-center d-flex mt-2 small">
+                  <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                  Pakistan
+                </div> -->
+              </div>
+              <div class="card-body px-0">
+                <p class="text-muted mb-0">
+                  Posted On
+                  {{ _compaign.createdDate | date: "EEEE, MMMM d, h:mm" }}
+                  {{ _compaign.createdDate | date: "a" | lowercase }}
+                </p>
+              </div>
+            </div>
+            <div class="card card-campaign">
+              <div class="card-header bg-white border-0 px-0 pb-0">
+                <h5 class="text-primary  fw-bold">Description</h5>
+                <p [(innerHtml)]="_compaign.description">
+                  {{ _compaign.description || "N/A" }}
+                </p>
+              </div>
+            </div>
+            <div class="card card-campaign">
+              <div class="card-header bg-white border-0 px-0 pb-0">
+                <h5 class="text-primary  fw-bold">Questions</h5>
+                <p *ngFor="let ques of _compaign.questions; let i = index">
+                  {{ i + 1 }}. {{ ques.question }}
+                </p>
+                <p *ngIf="_compaign.questions && _compaign.questions.length == 0">N/A</p>
+              </div>
+            </div>
+            <div class="card card-campaign">
+              <div class="card-header bg-white border-0 px-0 pb-0">
+                <h5 class="text-primary  fw-bold">
+                  {{ _compaign.payByText || "N/A" }}
+                </h5>
+                <p>
+                  {{ _compaign.payByText || "N/A" }} to scale up your
+                  Campaign Up and down
+                </p>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="d-flex mb-2">
+                      <div class="me-3">
+                        <i class="fas fa-check-circle text-secondary me-2"></i>
+                        <span class="text-muted">
+                          {{
+                              _compaign.payPerText || "N/A"
+                          }}
+                        </span>
+                      </div>
+                    </div>
+                    <p class="small text-muted">Campaign Length</p>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="d-flex mb-2">
+                      <div class="me-3">
+                        <i class="fas fa-check-circle text-secondary me-2"></i>
+                        <span class="text-muted">
+                          {{
+                              _compaign.compaignDuration
+                          }}
+                        </span>
+                      </div>
+                    </div>
+                    <p class="small text-muted">Time Duration</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card card-campaign">
+              <div class="card-header bg-white border-0 px-0 pb-0">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h5 class="text-primary mb-2 fw-bold">Sale Price</h5>
+                    <h4 class="text-primary">${{ _compaign.price }}</h4>
+                  </div>
+                  <div class="col-md-4">
+                    <h5 class="text-primary mb-2 fw-bold">
+                      Sales Required
+                    </h5>
+                    <h4 class="text-primary">{{ _compaign.sale }}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="skillsFlag" class="card card-campaign border-0">
+              <div class="card-header bg-white border-0 px-0 pb-0">
+                <h5 class="text-primary mb-4 fw-bold">Campaign Types</h5>
+                <ul class="list-unstyled seleted-option text-start mb-0">
+                  <li *ngFor="let p of skillsKeyword">{{ p }}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card card-campaign border-0">
+              <div class="card-header bg-white border-0 px-0 pb-0">
+
+                <p class="fw-bold">Attached File</p>
+                <div id="preview">
+                  {{_compaign.FileNames}}<a [routerLink]="" (click)="downloadDocFile()"><img width="100" height="100" src="../../../assets/images/filed.png" /></a>
+                </div>
+              </div>
+            </div>
+
+
+            
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div  *ngIf="userType==2">
+
+            
+            <button [disabled]="existProposal" class="btn btn btn-primary"
+                    (click)="GetCompaignDetail()">
+              Submit a Proposal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal End -->
+
+  <ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>
+</div>
+
+<!-- Billing-payment Modal -->
+<div class="modal fade"
+     id="Billing-payment"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false"
+     tabindex="-1"
+     aria-labelledby="Billing-payment"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Billing & Payments</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Package Type</label>
+                <select class="form-select">
+                  <option>Select Package</option>
+                  <option>10 proposals for 2$</option>
+                  <option>30 proposals for 5$</option>
+                  <option>70 proposals for 10$</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Card Number</label>
+                <input type="text" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Expiry Month</label>
+                <input placeholder="MM" type="text" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Expiry Year</label>
+                <input placeholder="YYYY" type="text" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">cvc</label>
+                <input placeholder="cvc" type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Value</label>
+                <input placeholder="$" type="number" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-outline-primary"
+                data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>

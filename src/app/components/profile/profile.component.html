@@ -1,0 +1,200 @@
+<app-header></app-header>
+
+<div class="inner-section">
+  <div class="container">
+
+
+
+
+
+    <div class="row mt-4 justify-content-center">
+
+            <div class="col-lg-9 col-xl-8">
+                <div class="card">
+                    <div *ngIf="_profileInfo" class="bg-white card-header d-md-flex py-3 align-items-center">
+                        <div class="profile-pic me-3 mb-3 mb-md-0">
+                            <img [src]="imgsrc">
+                            <label class="fas fa-pencil-alt text-primary edit-icon" for="file">
+                                <input type="file" id="file" #file accept="image/*" hidden
+                                (change)="handleFileInput($event)">
+                            </label>
+                            <i class="fas fa-circle text-secondary online"></i>
+                        </div>
+                        <div class="mb-3 mb-md-0">
+                            <h2 *ngIf="!isNameTitle" class="text-primary fw-bold">{{_profileInfo.pFullName ||
+                                nameTitle}}</h2>
+                            <input *ngIf="isNameTitle" class="form-control" minlength="0" maxlength="50"
+                                [(ngModel)]="_profileInfo.pFullName" type="text">
+                            <!-- <div class="me-3 small">
+                                <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                                Islamabad Pakistan - {{clock}} local time
+                            </div> -->
+                        </div>
+                        <div class="buttons-end ms-auto">
+                            <!-- <a class="btn btn-outline-primary" type="button">Preview</a> -->
+                            <a class="btn btn-outline-primary" *ngIf="isCancelBtn" type="button"
+                            (click)="DistroyBolean()()">Cancel</a>
+                            <a class="btn btn-primary" *ngIf="!isNameTitle" type="button"
+                                (click)="EditProfileData('nameInfo')">Edit</a>
+                            <a class="btn btn-primary" *ngIf="isNameTitle" type="button"
+                                (click)="UpdateAllProfileInformation()">Update</a>
+                               
+                        </div>
+                    </div>
+                    <div *ngIf="_profileInfo" class="card-body p-0">
+
+                        <div class="row g-0">
+                            <div class="col-md-3 border-end">
+                                <div class="p-3">
+                                    <ul class="list-unstyled profile-detail" *ngIf="userType=='2'">
+                                        <li>Employees : {{_profileInfo.pSittingCapacity}}
+                                            <a *ngIf="!isSittingCapacity" (click)="EditProfileData('sittingCapacity')"><i class="fas fa-pencil-alt text-muted fs-13"></i></a>
+
+                                            <input *ngIf="isSittingCapacity" class="form-control rounded my-3" minlength="0" maxlength="3" min="0" 
+                                            [(ngModel)]="_profileInfo.pSittingCapacity" type="text" (keypress)="numberOnly($event)">
+                                        
+                                            <a class="btn btn-primary" *ngIf="isSittingCapacity" type="button"
+                                            (click)="UpdateAllProfileInformation()">Update</a>
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+
+                                <div class="p-4">
+                                    <div class="d-flex align-items-center">
+                                        <h4 *ngIf="!isTitle" class="mb-0 text-primary">{{_profileInfo.pTitle ||
+                                            compaignTitle}} <div class="profile-icon"
+                                                (click)="EditProfileData('title')">
+                                                <i class="fas fa-pencil-alt text-muted fs-13"></i>
+                                            </div>
+                                        </h4>
+                                        <input *ngIf="isTitle" class="form-control me-2" minlength="0" maxlength="50"
+                                            [(ngModel)]="_profileInfo.pTitle" type="text">
+                                        <a class="btn btn-primary" *ngIf="isTitle" type="button"
+                                            (click)="UpdateAllProfileInformation()">Update</a>
+                                        <!-- <h5 class="ms-auto mb-0 text-primary fw-bold">$18.75/hr</h5> -->
+                                        <!-- <div class="profile-icon ms-2"><i
+                                                class="fas fa-pencil-alt text-muted fs-13"></i></div> -->
+                                    </div>
+                                    <div class="d-flex mt-3">
+                                        <p *ngIf="!isDescription" class="me-2 mb-0">
+                                            {{_profileInfo.pDescription || description}}
+                                        </p>
+                                        <div>
+                                            <div *ngIf="!isDescription" class="profile-icon me-auto"
+                                                (click)="EditProfileData('description')"><i
+                                                    class="fas fa-pencil-alt text-muted fs-13"></i></div>
+                                        </div>
+                                        <textarea *ngIf="isDescription" class="form-control me-2" minlength="0"
+                                            maxlength="300" [(ngModel)]="_profileInfo.pDescription"
+                                            type="text"></textarea>
+                                            <div>
+                                                <a class="btn btn-primary" *ngIf="isDescription" type="button"
+                                                (click)="UpdateAllProfileInformation()">Update</a>
+                                            </div>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="border-y p-4">
+                                    <span class="fw-bold">Portfolio </span>
+                                    <!-- <label *ngIf="_portfolioInfoo.length>5?false:true" style="cursor: pointer;"
+                                        class="fas fa-plus text-primary edit-icon" for="filee">
+                                        <input type="file" id="filee" #filee accept="image/*" hidden
+                                        (change)="sendFiles($event.target.files)">
+                                    </label> -->
+                                    <div class="row mt-3">
+                                       
+                                        <div class="col-md-4" *ngFor="let item of _portfolioInfoo;let index=index;">
+                                            <div class="position-relative">
+                                            <div *ngIf="item.portFolioID==_portFolioSelectedID" (click)="RemoveProfileInformation()" class="profile-icon delete-portfolio ms-2 position-absolute text-danger">X</div>
+                                            <div class="file-upload file mb-3" id="{{index+1}}" [ngStyle]="{'border': item.portFolioID==_portFolioSelectedID ? '3px solid #4c74f2' : '' }" (click)="PortFolioSelected(item.portFolioID)">
+                                                <img [src]="item.portFolioPath">
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" *ngIf="_portfolioInfoo.length<6?true:false">
+                                            <div class="file-upload file">
+                                                <i class="fas fa-plus text-muted fa-2x"></i>
+                                                <input type="file" name="file" accept="image/*"
+                                                (change)="sendFiles($event)" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="border-y border-top-0 p-4">
+                                    <div class="d-flex">
+
+                                  
+                                    <span class="fw-bold">Compaign Type </span>
+                                    <div class="profile-icon ms-2" *ngIf="!isCompaignType"
+                                    (click)="EditProfileData('compaignType')"><i
+                                        class="fas fa-pencil-alt text-muted fs-13"></i>
+                                </div>
+                            </div>
+
+
+                                    <div class="d-flex mt-2">
+                                        <div class="col me-2">
+                                            <input *ngIf="isCompaignType" class="form-control" minlength="0"
+                                            maxlength="50" [(ngModel)]="compaignType" type="text"> 
+                                        </div>
+                                        <div class="col-auto">
+                                            <span class="btn btn-primary" *ngIf="isCompaignType"
+                                            (click)="AddCompaignType(compaignType)" style="cursor: pointer;"><i
+                                                class="fas fa-plus fa-sm me-1"></i>Add New</span>
+                                        </div>
+                                    </div>
+                                   
+
+                                  
+                                  
+
+                                   
+                                    <div class="mt-3">
+                                        <ul class="list-unstyled seleted-option text-start mb-0"
+                                        *ngIf="_profileInfo.pCompaign">
+                                      <li *ngFor="let subCategory of _profileInfo.pCompaign?.split(','); let i = index;">{{subCategory}} <i (click)="removeItem(i)" class="fas fa-times ml-2"></i></li>
+                
+                                    </ul>
+                
+                
+                                    <ul class="list-unstyled seleted-option text-start mb-0"
+                                        *ngIf="!_profileInfo.pCompaign">
+                                      No compaign type
+                                    </ul>
+                                        <div class="d-flex justify-content-end">
+                                            <a class="btn btn-primary" 
+                                            *ngIf="isCompaignType || isRemoveCompaign" type="button"
+                                            (click)="UpdateAllProfileInformation()">Update</a>
+                                            <div class="clearfix">
+                                        </div>
+                                           </div>
+                                       
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                            <form #checkout="ngForm" (ngSubmit)="onSubmit(checkout)" class="checkout">
+                                <div class="form-row">
+                                  <label for="card-info">Card Info</label>
+                                  <div id="card-info" #cardInfo></div>
+                    
+                                  <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
+                                </div>
+                    
+                                <button type="submit">Save</button>
+                              </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,3 @@
+<p [innerHtml]="content">{{ content }}</p>
+<a href="javascript:void(0)" *ngIf="!isContentToggled" (click)="toggleContent()">Read More</a>
+<a href="javascript:void(0)" *ngIf="isContentToggled" (click)="toggleContent()">Read Less</a>

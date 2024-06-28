@@ -1,0 +1,85 @@
+<div class="login-card d-sm-flex min-vh-100">
+
+  <div  [ngStyle]="{'display':step1 || step2?'':'none'}"  class="right_panel order-sm-2 py-4">
+      <h2 class="text-primary fw-bold mb-5">Sign Up</h2>
+
+
+
+          <div *ngIf="step1" class="login-container">
+              <div class="input-group mb-4 input-group-lg">
+                  <span class="input-group-text" id="basic-addon1"><img height="26"
+                          src="assets/images/icons/user-icon.svg"></span>
+                  <input type="email" [(ngModel)]="email" class="form-control" id="joinedEmail"placeholder="Enter your Email">
+              </div>
+              <a class="btn btn-primary btn-lg mb-4" (click)="join()">Join Us</a>
+
+          </div>
+ 
+        
+
+        
+
+          <div *ngIf="this.step2" class="login-container">
+              <div class="input-group mb-4 input-group-lg">
+                  <span class="input-group-text" id="basic-addon1"><img height="26"
+                          src="assets/images/icons/user-icon.svg"></span>
+                  <input type="text"  [(ngModel)]="username" class="form-control" placeholder="Add Username">
+              </div>
+              <div class="input-group mb-4 input-group-lg">
+                  <span class="input-group-text" id="basic-addon1"><img height="26"
+                          src="assets/images/icons/key-icon.svg"></span>
+                  <input type="password"  [(ngModel)]="password"  id="userPassword" class="form-control rounded-end" placeholder="Add Password">
+                  <i class="fas fa-eye Show_Password text-primary" (click)="onClickEye()"></i>
+              </div>
+              <a class="btn btn-primary btn-lg mb-4" (click)="nextjoin()">Next</a>
+          </div>
+
+
+<!-- 
+          <div  [ngStyle]="{'display':step1?'block':'none'}"  class="social-links">
+              <ul class="list-unstyled d-flex justify-content-center">
+                  <li><a class="linkedin" (click)="linkedIn()"><i class="fab fa-linkedin-in"></i></a></li>
+                  <li><a class="google" #loginRef (click)="prepareLogin()"><i class="fab fa-google"></i></a></li>
+              </ul>
+          </div> -->
+          <p class="border-bottom pb-4 mt-5">By Creating an account, you agree with our <a class="">Terms of
+                  Service</a>
+              & <a class="">Privacy Policy</a></p>
+          <p>Already Have an Account.? <a class="" routerLink="/login">Log In</a></p>
+
+  </div>
+
+
+
+  <div *ngIf="!step1 && !step2" class="right_panel order-sm-2 py-4">
+      <h2 class="text-primary fw-bold mb-5">Select user type</h2>
+
+      <div class="d-sm-flex select-user">
+          <div (click)="type=1;" class="card mb-4 mb-sm-0 " [ngClass]="type==1?'active':''">
+              <div  class="icon-box">
+                  <img src="assets/images/icons/mic-icon.svg">
+              </div>
+              <h5>Post A Compaign</h5>
+          </div>
+          <div (click)="type=2;" class="card " [ngClass]="type==2?'active':''">
+              <div  class="icon-box">
+                  <img src="assets/images/icons/ring-icon.svg">
+              </div>
+              <h5>Call Center</h5>
+          </div>
+      </div>
+      <a class="btn btn-primary btn-lg mb-4" (click)="signUp()">Register</a>
+
+
+  </div>
+
+  <div class="left_panel flex-column bg-light">
+    <div class="logo">
+      <a  routerLink=""><img height="35" src="/assets/images/callbit-logo.svg"></a>
+    </div>
+    <div class="login-banner">
+      <img class="img-fluid" src="./assets/images/login-img.png" />
+    </div>
+  </div>
+</div>
+<ngx-spinner   type="ball-spin-clockwise" size="medium"></ngx-spinner>

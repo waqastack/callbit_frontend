@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110.001" viewBox="0 0 110 110.001">
+  <g id="Group_15947" data-name="Group 15947" transform="translate(-803.999 -2017.275)">
+    <g id="Statistics" transform="translate(1210.564 1688.349)">
+      <text id="_100_" data-name="100%" transform="translate(-392.565 395.927)" fill="#0b164a" font-size="33" font-family="OpenSans-Semibold, Open Sans" font-weight="600" letter-spacing="-0.026em"><tspan x="0" y="0">100%</tspan></text>
+      <g id="_24-hours" data-name="24-hours" transform="translate(-406.565 328.926)">
+        <path id="Exclusion_1" data-name="Exclusion 1" d="M55,110A55.015,55.015,0,0,1,33.592,4.322,55.015,55.015,0,0,1,76.409,105.679,54.657,54.657,0,0,1,55,110ZM55,6a49,49,0,1,0,49,49A49.056,49.056,0,0,0,55,6Z" fill="#0b164a"/>
+      </g>
+    </g>
+  </g>
+</svg>

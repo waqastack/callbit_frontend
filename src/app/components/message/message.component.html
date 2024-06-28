@@ -1,0 +1,147 @@
+<app-header></app-header>
+<div class="inner-section">
+  <div class="container">
+    <div class="row">
+      <div class="border-container">
+
+        <div class="container-fluid back-container">
+
+          <div class="back-top"></div>
+          <div class="back-bottom"></div>
+
+        </div>
+
+        <!-- chat html starts -->
+
+        <div class="container chat-row-top">
+
+
+          <!-- chat lower part start -->
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="chat-members">
+                <div class="member-search">
+                  <input type="search" name="" class="form-control" placeholder="Search">
+                </div>
+
+                <div class="members-body">
+                  <ul class="list-unstyled">
+                    <li *ngFor="let user of userList;let index=index;">
+                      <span (click)="onUserSelection(index)">
+                        <td>
+                          <img src="../../../assets/images/avatar.jpg" alt="" class="profile-image rounded-circle me-2">
+                        </td>
+                        <td>{{user.email.split('@')[0]}} <small *ngIf="user.isConnected">online</small><br> </td>
+                        <!-- <td><small> {{user.time}}</small></td> -->
+                      </span>
+
+                    </li>
+
+
+                  </ul>
+                </div>
+
+
+              </div>
+            </div>
+            <div class="col-sm-8 ps-0">
+              <div class="message-card">
+
+                <div class="message-head">
+                  <img src="../../../assets/images/avatar.jpg" alt="" class="profile-image rounded-circle me-2">
+                  <h5 class="user-name ml-3 mb-0">
+                    {{selectedUser.email==""?'':selectedUser.email.split('@')[0]}}
+                  </h5>
+                  <span class="float-right mt-2 d-none">
+                    <i class="fas fa-search mr-3"></i>
+                    <i class="fas fa-ellipsis-v mr-3"></i>
+
+
+                  </span>
+                </div>
+                <div class="message-body">
+
+
+                  <table class="table">
+
+                    <tbody>
+                      <tr *ngFor="let app of chat.messages">
+                        <span class="float-end card-sent" *ngIf="roomDetail.from==app.from">
+                        <td>
+                          <small>
+                            <p *ngIf="!app.message.includes('http')" class="text-sent">
+                              {{app.message}}
+                            </p>
+                            <p *ngIf="app.message.includes('http')" class="text-sent" (click)="download(app.message)">
+                              Download Attached File
+                            </p>
+                          </small>
+                        </td>
+                        <td class="text-time"><small class="float-end text-muted"> {{app.time}}</small></td>
+                        </span>
+                        <span class="card-receive" *ngIf="roomDetail.from!=app.from">
+                        <td>
+                          <small>
+
+                            <p *ngIf="!app.message.includes('http')" class="text-receive">
+                              {{app.message}}
+                            </p>
+                            <!-- (click)="download(app.message)" -->
+                            <p *ngIf="app.message.includes('http')" class="text-sent" (click)="download(app.message)">
+                              Download Attached File
+                            </p>
+                          </small>
+                        </td>
+                        <td class="text-time float-end"><small class="float-end text-muted"> {{app.time}}</small></td>
+                        </span>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row message-area-bar align-items-center  p-3">
+                  <div class="col-auto">
+
+                    <label class="fas fa-paperclip text-primary edit-icon" for="file">
+                      <input type="file" id="file" #file accept="image/*" hidden
+                      (change)="selectFile($event)">
+                    </label>
+                  </div>
+                  <div class="col">
+
+                    <input type="text" (keyup.enter)="sendMessageToUser()" [(ngModel)]="message" name="" class="form-control text-area" placeholder="Write a message">
+
+
+
+                  </div>
+                  <div class="col-auto send-button">
+                    <a class="btn btn-primary"
+                       (click)="sendMessageToUser()">Send</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+
+
+
+
+
+
+        <!-- <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-8">
+          <div class="card">
+
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+    <ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>

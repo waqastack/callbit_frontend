@@ -1,0 +1,421 @@
+<app-header></app-header>
+<div class="inner-section" (click)="hideSuggestion()">
+	<div class="container">
+	  <div class="row mt-0 mt-sm-4">
+		<div class="col-lg-3">
+		  <ul class="list-unstyled main-left-list">
+			<li>
+			  <a (click)="f1 = true; f2 = false; f3 = false; f4 = false;stepMove(0)" class="me-auto"
+				 [ngClass]="formCurrentLevel == 0 ? 'active' : ''">Title</a>
+			  <i [ngClass]="formCurrentLevel>= 0 ? 'fas fa-check-circle' : 'far fa-circle'" class="text-muted">
+			  </i>
+			</li>
+			<li>
+			  <a (click)="f2 = true; f1 = false; f3 = false; f4 = false;stepMove(1)" class="me-auto"
+				 [ngClass]="formCurrentLevel == 1 ? 'active' : ''">Description</a>
+			  <i [ngClass]="formCurrentLevel>= 1 ? 'fas fa-check-circle' : 'far fa-circle'" class="text-muted">
+			  </i>
+			</li>
+			<li>
+			  <a (click)="f3 = true; f1 = false; f2 = false; f4 = false;stepMove(2)" class="me-auto"
+				 [ngClass]="formCurrentLevel == 2 ? 'active' : ''">Budget</a>
+			  <i [ngClass]="formCurrentLevel>= 3 ? 'fas fa-check-circle' : 'far fa-circle'" class="text-muted">
+			  </i>
+			</li>
+			<li>
+			  <a (click)="f3 = false; f1 = false; f2 = false; f4 = true;stepMove(3)" class="me-auto"
+				 [ngClass]="formCurrentLevel == 3 ? 'active' : ''">Review</a>
+			  <i [ngClass]="formCurrentLevel>= 3 ? 'fas fa-check-circle' : 'far fa-circle'" class="text-muted">
+			  </i>
+			</li>
+		  </ul>
+		</div>
+		<div class="col-lg-8">
+		  <!-- #region CAMPAIGN NAME-->
+		  <div class="card" *ngIf="formCurrentLevel == 0">
+			<div class="bg-white card-header d-flex py-3 align-items-center">
+			  <h4 class="mb-0 text-primary fw-bold">Title</h4> <small class="text-muted ms-3">Step 1 of 4</small>
+			</div>
+			<div class="card-body">
+			  <p class="mb-1">Enter the name of your campaign</p>
+			  <textarea class="form-control" [(ngModel)]="compaign.name" placeholder="“Write something that stands out amongst other campaigns”" (input)="onCampaignNameChange()"></textarea>
+			  <p *ngIf="campaignNameError?.length > 0" class="error"> {{ campaignNameError }} </p>
+			  <p class="text-muted text-end small mt-2"> {{ compaign?.name?.length }}/{{ NameMaxLength }} characters </p>
+			  <!-- <p class="mt-4">Write something that will stand out amongst other campaigns.</p>
+			  <ul class="list-circle">
+				<li>What The Deliverable is</li>
+				<li>Type of Campaigners you're looking for</li>
+				<li>Anything unique about campgain or your company</li>
+			  </ul> -->
+			  <p class="mt-4">Name your campaigns by adding tags below.</p>
+			 
+			  <div class="input-group mb-3">
+				<input [(ngModel)]="compaign.type" (ngModelChange)="searchText()" type="text" class="form-control rounded-start"
+					   placeholder="Tags allow users to search your campaigns easily" aria-describedby="basic-addon2" (keyup.enter)="addType(compaign.type,'')"/>
+  
+					   <span (click)="addType(compaign.type,'')" class="input-group-text bg-secondary text-white cursor-pointer rounded-end px-4" id="basic-addon2">
+						Add
+					  </span>
+				
+				<ul class="mdb-autocomplete-wrap" *ngIf="showSuggestion" style="max-height: 225px;max-width:fit-content;margin-top:37px">
+				  <li *ngFor="let p of keywordTags" (click)="addType(p.keywordName,'Already Exist')">{{p.keywordName}}</li>
+				</ul>
+			  </div>
+			  <!-- <p><b>Desclaimer:</b> It allows users to search your campaigns easily</p> -->
+
+			  <ul class="list-unstyled choose-option text-start">
+				<li class="text-primary me-2">Tags:</li>
+				<li *ngFor="let i of type">
+				  <span>
+					<i class="fas fa-plus fa-sm me-1"></i>{{ i }}
+					<i  (click)="deletetype(i)" class="fa fa-times text-danger ms-2"></i>
+				  </span>
+				</li>
+  
+			  </ul>
+  
+			  <!-- <div class="row">
+				<div class="col-md-3">
+				  <input type="checkbox" [(ngModel)]="compaign.inBound" /> InBound
+				</div>
+				<div class="col-md-3">
+				  <input type="checkbox" [(ngModel)]="compaign.outBound" /> OutBound
+				</div>
+			  </div> -->
+			  <div class="mt-5 text-end"> <button class="btn btn-outline-primary me-2" [routerLink]="['/my']" type="button">Exit</button> <button class="btn btn-primary" (click)="onFirstFormSubmit()" type="button">Next</button> </div>
+			</div>
+		  </div>
+		  <!-- #endregion END OF CAMPAIGN NAME-->
+		  <!-- #region CAMPAIGN DESCRIPTION -->
+		  <div class="card" *ngIf="formCurrentLevel == 1">
+			<div class="bg-white card-header d-flex py-3 align-items-center">
+			  <h4 class="mb-0 text-primary fw-bold">Description</h4> <small class="text-muted ms-3">Step 2 of 4</small>
+			</div>
+			<div class="card-body">
+				<p>Write a comprehensive campaign description including:</p>
+				<ul class="list-circle">
+					<li>Campaign objectives and strategy.</li>
+					<li>Benchmarks for your campaign.</li>
+					<li>Major tasks, duties, and responsibilities.</li>
+				</ul>
+				<!--<angular-editor [(ngModel)]="compaign.description" rows="8" class="form-control" (input)="onCampaignDescriptionChange()" [config]="config"></angular-editor>-->
+				<ckeditor [editor]="editor" [(ngModel)]="compaign.description" rows="8" class="form-control"></ckeditor>
+				<p><b>Desclaimer:</b> Don't include your payment details here. Save them for the next section.</p>
+
+				<p *ngIf="campaignDescriptionError?.length > 0" class="error"> {{ campaignDescriptionError }} </p>
+				<p class="text-muted text-end small mt-2"> {{ compaign?.description?.length }}/{{ DescriptionMaxLength }} characters (minimum {{ DescriptionMinLength }}) </p>
+				<p class="mt-4 font-700">Additional Project Files (Optional)</p>
+				<div class="file-upload file">
+					{{compaign.FileNames || "Drag or upload project images" }}
+					<input type="file" id="FUImage" name="FUImage" accept=".png, .jpg, .jpeg" (change)="handleFileInput($event.target.files)" />
+				</div>
+				<p class="text-muted text-end small mt-2"> You may attach up to 5 files under 100MB each </p>
+				<p class="mt-4 font-700">Screening Questions(Optional)</p>
+				<p>Add screening questions and/or require a cover letter.</p>
+
+
+				<input type="checkbox" class="mb-3" (ngModelChange)="changeQstAdd($event)" [(ngModel)]="checkQst" /> {{qstExtra}}
+
+
+
+			<div class="mb-2" *ngFor="let p of compaign.questions; index as i;">
+
+				<div class="d-sm-flex  align-items-center">
+					<span class="me-sm-3" *ngIf="enableEditIndex != i">
+						<b>Question {{i+1}}:</b> {{ p }}
+					</span>
+
+					<div class="me-0 me-sm-2 mt-3 mt-sm-0 w-100" *ngIf="enableEdit && enableEditIndex == i">
+						<input [(ngModel)]="qstion" type="text" class="form-control mb-0" placeholder="Your Question"
+									 aria-describedby="basic-addon2" />
+					</div>
+					<div class="mt-2 mt-sm-0">
+
+						<i class="fas fa-pencil-alt fa-sm me-3 text-primary cursor-pointer" *ngIf="!enableEdit"
+							 (click)="enableEditMethod($event, i)">
+
+						</i>
+						<i (click)="deleteQst(i)" class="fas fa-trash text-danger cursor-pointer"></i>
+					</div>
+				</div>
+			
+				
+					<button *ngIf="enableEdit && enableEditIndex == i"
+									class="btn btn-outline-primary btn-sm me-1 mt-3" (click)="cancel()">
+						Cancel
+					</button>
+					<button *ngIf="enableEdit && enableEditIndex == i" id="saveBtn"
+									class="btn btn-primary btn-sm mt-3" (click)="saveSegment()" type="submit">
+						Save
+					</button>
+				
+				
+
+			</div>
+
+
+				<div class="input-group my-3">
+					<input [(ngModel)]="question" (keyup.enter)="addNewQuestion()" type="text" class="form-control rounded-start" placeholder="Your Question"
+								 aria-describedby="basic-addon2" />
+					<span (click)="addNewQuestion(question)" class="input-group-text bg-secondary text-white cursor-pointer px-4" id="basic-addon2">
+						<i class="fas fa-plus fa-sm me-1"></i>Add
+					</span>
+				</div>
+				<p class="error" *ngIf="questionsError?.length > 0"> {{ questionsError }} </p>
+				<div class="mt-3 mt-sm-5  d-sm-flex">
+					<button class="btn btn-outline-primary me-auto" (click)="goBack()" type="button">Exit</button>
+					<button class="btn btn-outline-primary ms-2 ms-sm-0" (click)="goBack()" type="button">Back</button>
+					<button class="btn btn-primary ms-sm-2 mt-2 mt-sm-0" (click)="onDescriptionFormSubmit()" type="button">Next</button>
+				</div>
+			</div>
+		  </div>
+		  <!-- #endregion END OF CAMPAIGN DESCRIPTION -->
+		  <div class="card" *ngIf="formCurrentLevel == 2">
+			<div class="bg-white card-header d-flex py-3 align-items-center">
+			  <h4 class="mb-0 text-primary fw-bold">Budget</h4> <small class="text-muted ms-3">Step 3 of 4</small>
+			</div>
+			<div class="card-body">
+			  <p>How would you like to pay for your campaign?</p>
+			  <h4 *ngIf="compaign.payType == 'One-Time'" class="text-primary fw-bold">
+				Pay Fixes Amount
+			  </h4>
+			  <h4 *ngIf="compaign.payType != 'One-Time'" class="text-primary fw-bold">
+				
+			  </h4>
+			  <div class="row Performance mt-5">
+				<div (click)="changePayByType(1)" class="col-lg-6">
+				  <div class="box box-sales position-relative mb-4 mb-lg-0" [ngClass]="compaign.payType != 'One-Time' ? 'active' : ''">
+					<h5 class="fw-bold">Performance Pay</h5>
+					<p class="mb-0"> Pay a commission for any sales converted. </p>
+					<div class="Popular-title">Popular</div>
+				  </div>
+				</div>
+				<div (click)="changePayByType(2)" class="col-lg-6">
+				  <div class="box box-fixed" [ngClass]="compaign.payType == 'One-Time' ? 'active' : ''">
+					<h5 class="fw-bold">Fixed Pay</h5>
+					<p class="mb-0"> Pay a fixed amount to scale your campaign up and down. </p>
+				  </div>
+				</div>
+			  </div>
+			  <div *ngIf="compaign.payType == 'One-Time'" class="row budget-selection mt-5">
+				<div class="col-lg-3" (click)="changePerType(1, 'Fixed Price')">
+				  <div [ngClass]="compaign.payPerText == 'Pay Per Hour' ? 'active' : ''" class="box">
+					<p class="mb-0">Pay Per Hour</p>
+				  </div>
+				</div>
+				<div class="col-lg-3" (click)="changePerType(2, 'Fixed Price')">
+				  <div [ngClass]="compaign.payPerText == 'Pay Per Day' ? 'active' : ''" class="box">
+					<p class="mb-0">Pay Per Day</p>
+				  </div>
+				</div>
+				<div class="col-lg-3" (click)="changePerType(3, 'Fixed Price')">
+				  <div [ngClass]="compaign.payPerText == 'Pay Per Week' ? 'active' : ''" class="box">
+					<p class="mb-0">Pay Per Week</p>
+				  </div>
+				</div>
+				<div class="col-lg-3" (click)="changePerType(4, 'Fixed Price')">
+				  <div [ngClass]="compaign.payPerText == 'Pay Per Month' ? 'active' : ''" class="box">
+					<p class="mb-0">Pay Per Month</p>
+				  </div>
+				</div>
+			  </div>
+			  <div *ngIf="compaign.payType == 'One-Time'" class="row mt-3">
+				<!-- <div class="col-md-8">
+				  <div class="mb-3 mb-md-0">
+					<label class="form-label">Describe you Campaign</label>
+					<input [(ngModel)]="compaign.describe" class="form-control rounded" type="text" (input)="onFixPriceDescriptionChange()" />
+					<p class="error" *ngIf="fixPriceDescriptionError?.length > 0"> {{ fixPriceDescriptionError }} </p>
+				  </div>
+				</div> -->
+				<div class="col-md-4">
+				  <div class="mb-3 mb-md-0">
+					<label class="form-label">{{compaign.payPerText}} Price</label>
+					<input [(ngModel)]="compaign.price" class="form-control rounded" (input)="onFixPriceChange()" type="number" placeholder="0,00" min="0" />
+					<p class="error" *ngIf="fixPriceError?.length > 0"> {{ fixPriceError }} </p>
+				  </div>
+				</div>
+			  </div>
+			  <p *ngIf="compaign.payType == 'One-Time'" class="text-muted small"> Total amount deduct from your account : </p>
+			  <div *ngIf="compaign.payType != 'One-Time'" class="row performance-detail mt-5">
+				<div (click)="changePerType(1, 'Sales')" class="col-lg-6">
+				  <div [ngClass]="compaign.payPerText == 'Pay Per Transfer'? 'active': ''" class="box mb-4 position-relative">
+					<i *ngIf="compaign.payPerText != 'Pay Per Transfer'" class="far fa-circle text-muted"></i> 
+					<i *ngIf="compaign.payPerText == 'Pay Per Transfer'" class="fas fa-check-circle text-secondary"></i>
+					<h5 class="fw-bold">Pay Per Transfer</h5>
+					<p class="mb-0"> Pay only for qualified transfers. </p>
+				  </div>
+				</div>
+				<div (click)="changePerType(2, 'Sales')" class="col-lg-6">
+				  <div [ngClass]="compaign.payPerText == 'Pay Per Lead' ? 'active' : ''" class="box mb-4">
+					<i *ngIf="compaign.payPerText != 'Pay Per Lead'" class="far fa-circle text-muted"></i> 
+					<i *ngIf="compaign.payPerText == 'Pay Per Lead'" class="fas fa-check-circle text-secondary"></i>
+					<h5 class="fw-bold">Pay Per Lead</h5>
+					<p class="mb-0"> Pay only for qualified leads. </p>
+				  </div>
+				</div>
+				<div (click)="changePerType(3, 'Sales')" class="col-lg-6">
+				  <div [ngClass]="compaign.payPerText == 'Pay Per Sale' ? 'active' : ''" class="box mb-4 mb-lg-0">
+					<i *ngIf="compaign.payPerText != 'Pay Per Sale'" class="far fa-circle text-muted"></i> 
+					<i *ngIf="compaign.payPerText == 'Pay Per Sale'" class="fas fa-check-circle text-secondary"></i>
+					<h5 class="fw-bold">Pay Per Sale</h5>
+					<p class="mb-0">  Pay a commission for any sales converted.</p>
+				  </div>
+				</div>
+				<div (click)="changePerType(4, 'Sales'); openVerticallyCentered(content)" class="col-lg-6">
+				  <div [ngClass]="compaign.payPerText == 'Others' ? 'active' : ''" class="box">
+					<i *ngIf="compaign.payPerText != 'Others'" class="far fa-circle text-muted"></i> 
+					<i *ngIf="compaign.payPerText == 'Others'" class="fas fa-check-circle text-secondary"></i>
+					<h5 class="fw-bold">{{ compaign.payPerTextOther }}</h5>
+					<p class="mb-0"> Define payment before campaign begins and pay only when campaign is start.</p>
+				  </div>
+				</div>
+			  </div>
+			  <p *ngIf="compaign.payType != 'One-Time'" class="mt-4"> Set Your Estimated Budget </p>
+			  <!-- <div *ngIf="compaign.payType!='One-Time'" class="form-check">
+				<input class="form-check-input" type="checkbox" (change)="checkedOwnPrice()"
+				  [(ngModel)]="compaign.setOwnPriceRbtn" name="setPriceName" id="setPriceID">
+				Set your own Price
+  
+				<label class="form-check-label" for="flexRadioDefault1">
+				</label>
+			  </div> -->
+			  <div *ngIf="compaign.payType != 'One-Time'" class="row mt-3">
+				<div class="col-md-4">
+					<div class="mb-3">
+					  <label class="form-label" *ngIf="compaign.payPerText=='Pay Per Transfer'">Required Transfer</label>
+					  <label class="form-label" *ngIf="compaign.payPerText=='Pay Per Lead'">Required Leads</label>
+					  <label class="form-label" *ngIf="compaign.payPerText=='Pay Per Sale'">Required Sales</label>
+					  <label class="form-label" *ngIf="compaign.payPerText=='Others'">Other Sales</label>
+					  <input [disabled]="salesDisabled" class="form-control rounded" (input)="onAmountChange($event.target.value, 'sale')" [(ngModel)]="compaign.paySale" type="number" min="0" />
+					</div>
+				  </div>
+				  <div class="col-md-4">
+					<div class="mb-3">
+					  <label class="form-label" *ngIf="compaign.payPerText=='Pay Per Transfer'">Price Per Transfer</label>
+					  <label class="form-label" *ngIf="compaign.payPerText=='Pay Per Lead'">Price Per Leads</label>
+					  <label class="form-label" *ngIf="compaign.payPerText=='Pay Per Sale'">Price Per Sale</label>
+					  <label class="form-label" *ngIf="compaign.payPerText=='Others'">Other Price</label>
+					  <input [disabled]="priceDisabled" (input)="onAmountChange($event.target.value, 'price')" class="form-control rounded" [(ngModel)]="compaign.payPrice" type="number" min="0" />
+					</div>
+				  </div>
+				<div class="col-md-4">
+				  <div class="mb-3">
+					<label class="form-label">Total Amount</label>
+					<input disabled class="form-control rounded" [(ngModel)]="compaign.totalAmount" type="text" />
+				  </div>
+				</div>
+			  </div>
+			  <div *ngIf="compaign.payType != 'One-Time'" class="align-items-center border d-flex px-3 py-4 mt-4">
+				<div class="col-md-9">
+				  <h6 class="fw-bold">Total Price of campaign.</h6>
+				  <p class="mb-0">
+					<i>
+						This is the total amount,Callbit deduct from your account.
+					</i>
+				  </p>
+				</div>
+				<div class="col-md-3 text-end">
+				  <h5 class="fw-bold">${{ compaign.totalAmount }}</h5>
+				</div>
+			  </div>
+			  <p *ngIf="compaign.payType != 'One-Time'" class="mt-4"> How long do you want your campaign to last? </p>
+			  <div *ngIf="compaign.payType != 'One-Time'" class="row performance-detail">
+				<div (click)="changeCompaignDuration(1)" class="col-lg-6">
+				  <div [ngClass]="compaign.compaignDuration == 'Less than 7 days'? 'active bg-primary text-white': ''"
+					   class="box mb-4">
+					<p class="mb-0">Less than 1 month</p>
+				  </div>
+				</div>
+				<div (click)="changeCompaignDuration(2)" class="col-lg-6">
+				  <div [ngClass]="compaign.compaignDuration == 'Less than 1 months'? 'active bg-primary text-white': ''"
+					   class="box mb-4">
+					<p class="mb-0">Less than 3 months</p>
+				  </div>
+				</div>
+				<div (click)="changeCompaignDuration(3)" class="col-lg-6">
+				  <div [ngClass]="compaign.compaignDuration == 'Less than 3 months'? 'active bg-primary text-white': ''"
+					   class="box mb-4 mb-lg-0">
+					<p class="mb-0">3 to 6 months</p>
+				  </div>
+				</div>
+				<div (click)="changeCompaignDuration(4)" class="col-lg-6">
+				  <div [ngClass]="compaign.compaignDuration == '3 to 6 months'? 'active bg-primary text-white': ''" class="box">
+					<p class="mb-0">6 to 9 months</p>
+				  </div>
+				</div>
+			  </div>
+			  <div class="mt-5 d-flex"><button class="btn btn-outline-primary me-auto" (click)="goBack()" type="button">Exit</button>  <button class="btn btn-outline-primary me-2" (click)="goBack()" type="button">Back</button> <button class="btn btn-primary" (click)="onBudgetFormSubmit()" type="button">Next</button> </div>
+			</div>
+		  </div>
+		  <div *ngIf="formCurrentLevel == 3" class="card">
+			<div class="bg-white card-header d-flex py-3 align-items-center">
+			  <h4 class="mb-0 text-primary fw-bold">Review</h4> <small class="text-muted ms-3">Step 4 of 4</small>
+			</div>
+			<div class="card-body px-0">
+			  <div class="px-3">
+				<h5 class="fw-bold mb-3">{{ compaign.payByText=='Pay By the Sales'?'Pay Per Sale':'Fixed Pay' }}</h5>
+				<p class="fw-bold">{{ compaign.payPerText }}</p>
+				<p class="fw-bold">Title of campaign: </p><p>{{ compaign.name }}</p>
+				<div class="d-flex justify-content-between align-items-center">
+				  <p class="fw-bold">Description</p>
+				  <!-- <div class="edit-des bg-light"> <i class="fas fa-pencil-alt text-primary cursor-pointer"></i> </div> -->
+				</div>
+				<p [innerHtml]="compaign.description"> {{ compaign.description }} </p>
+			  </div>
+			  <div class="border-y p-3">
+				<p class="fw-bold">Your Tags/Keywords</p>
+				<ul class="list-unstyled choose-option text-start">
+				  <li *ngFor="let i of type"> <span><i class="fa-sm me-1"></i>{{ i }}</span> </li>
+				</ul>
+			  </div>
+			  <div class="px-3">
+				<p class="fw-bold mt-4">Your Payouts</p>
+				<div class="row">
+				  <div *ngIf="compaign.payByText == 'Pay By the Sales'" class="col-md-6">
+					<p class="fw-bold mb-1">Sales</p>
+					<p> {{ compaign.paySale }} </p>
+				  </div>
+				  <div class="col-md-6">
+					<p class="fw-bold mb-1">Price</p>
+					<p *ngIf="compaign.payByText == 'Pay By the Sales'"> {{ compaign.payPrice }} </p>
+					<p *ngIf="compaign.payByText == 'Pay By the Fix Price'"> {{ compaign.price }} </p>
+				  </div>
+				  <div class="col-md-6">
+					<p class="fw-bold mb-1">Total Price of Campaign</p>
+					<p *ngIf="compaign.payByText == 'Pay By the Sales'"> {{ compaign.totalAmount }} </p>
+					<p *ngIf="compaign.payByText == 'Pay By the Fix Price'"> {{ compaign.price }} </p>
+				  </div>
+				</div>
+			  </div>
+			  <div class="border-y p-3" *ngIf="compaign.payByText == 'Pay By the Sales'">
+				<p class="fw-bold"> Life of Your Campaign </p>
+				<p>{{ compaign.compaignDuration }}</p>
+			  </div>
+			  <div class="border-y p-3">
+				<p class="fw-bold">Attached File</p>
+				<div id="preview">
+				  {{compaign.FileNames}}
+				  <a [routerLink]="" (click)="downloadDocFile(compaign)"><img width="100" height="100" src="../../../assets/images/filed.png" /></a>
+				</div>
+			  </div>
+			  <div class="mt-5 px-3 mb-2 buttons-end"> <a class="btn btn-outline-primary me-2" [routerLink]="['/my']" type="button">Exit</a> <a class="btn btn-primary me-2" (click)="goBack()" type="button">Back</a> <a class="btn btn-primary" (click)="postCompaign()" type="button">Post</a> </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+  <ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>
+  <ng-template #content let-modal>
+	<div class="modal-header">
+	  <h4 class="modal-title">Modal title</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"> <span aria-hidden="true">&times;</span> </button>
+	</div>
+	<div class="modal-body">
+	  <p>Please enter custom name for your payment type</p>
+	  <input type="text" [(ngModel)]="compaign.payPerTextOther" class="form-control" />
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-danger" (click)="modal.close('Close click')"> Close </button>
+	</div>
+  </ng-template>

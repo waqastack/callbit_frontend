@@ -1,0 +1,16 @@
+a {
+    cursor: pointer;
+  }
+  
+  .pagination {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .submited_proposal{
+   padding: 5px;
+    text-align: right;
+    text-align: justify;
+    display: inline-block;
+   
+  }
+  

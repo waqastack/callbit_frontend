@@ -1,0 +1,741 @@
+<app-header></app-header>
+<div class="container">
+
+
+  <div class="row mt-4">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body nav-campaign p-0">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="request-tab" data-bs-toggle="tab" data-bs-target="#request" type="button" role="tab" aria-controls="home" aria-selected="true">Contracts Request</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="start-tab" (click)="tabSwitch('start')" data-bs-toggle="tab" data-bs-target="#start" type="button" role="tab" aria-controls="home" aria-selected="true">Start Contract</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="ongoing-tab" (click)="tabSwitch('ongoing')" data-bs-toggle="tab" data-bs-target="#ongoing" type="button" role="tab" aria-controls="home" aria-selected="true">On Going Contracts</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="completed-tab" (click)="tabSwitch('completed')" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="true">Completed Contracts</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="cancelled-tab" (click)="tabSwitch('cancelled')" data-bs-toggle="tab" data-bs-target="#cancelled" type="button" role="tab" aria-controls="cancelled" aria-selected="true">Cancelled Contracts</button>
+            </li>
+            <!--<li class="nav-item" role="presentation">
+    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="profile" aria-selected="false">Completed Contracts</button>
+  </li>-->
+          </ul>
+          <div class="tab-content py-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="request" role="tabpanel" aria-labelledby="request-tab">
+              <div class="card-body">
+                <div class="card card-campaign">
+                  <div class="input-group inner-main-search">
+                    <input type="text" class="form-control" placeholder="Search Your Contract Request"
+                           name="search" [(ngModel)]="searchText" autocomplete="off"
+                           aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <span class="input-group-text bg-secondary text-white cursor-pointer px-4" id="basic-addon2"><i class="fas fa-search fa-lg"></i></span>
+                  </div>
+                  <!--<a [routerLink]="" (click)="InviteCoworkers()" class="mt-2">Advanced Search</a>-->
+                </div>
+                <div class="card card-campaign" *ngFor="let p of resPendingList | filter:searchText">
+                  <div class="card-header d-flex bg-white border-0 px-0 pb-0 justify-content-between">
+                    <div>
+                      <h5 class="text-primary mb-0 fw-bold">{{p.clientName}}</h5>
+                      <small>
+                        {{p.createdDate | date : 'EEEE, MMMM d, h:mm' }} {{ p.createdDate | date : 'a' | lowercase }}
+                      </small>
+                    </div>
+                    <div class="ms-auto d-flex mb-3">
+                      <button (click)="UpdateContractStatus(p,'Contract Proposal Accepted')" class="btn btn-outline-primary me-2">
+                        Accept Contract
+                      </button>
+                      <button (click)="UpdateContractStatus(p,'Contract Proposal Rejected')" class="btn btn-primary">
+                        Reject Contract
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="start" role="tabpanel" aria-labelledby="start-tab">
+              <div class="card-body">
+                <div class="card card-campaign">
+                  <div class="input-group inner-main-search">
+                    <div style="margin-right:33px" class="col-md-3">
+                      <select [(ngModel)]="compaignID" (change)="compaignChange()" class="form-control form-select form-select-sm rounded select-rejected">
+                        <option value="0" selected>Select Compaign</option>
+                        <option *ngFor="let complst of compaignListDDL" [value]="complst.compaignID">
+                          {{complst.compaignName}}
+                        </option>
+                      </select>
+                    </div>
+                    <div style="margin-right:33px" class="col-md-3">
+                      <select [(ngModel)]="clientID" (change)="clientChange()" class="form-control form-select form-select-sm rounded select-rejected">
+                        <option value="0" selected>Select Client</option>
+                        <option *ngFor="let hirelst of clientListDDL" [value]="hirelst.clientID">
+                          {{hirelst.clientName}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4 justify-content-center" *ngIf="resCompaignGenRsp.compaignName">
+                  <div class="col-lg-12 col-xl-10">
+                    <div class="card">
+                      <div class="bg-white card-header d-md-flex py-3 align-items-center">
+                        <div class="me-auto">
+                          <p class="fw-bold mb-1">{{resCompaignGenRsp.compaignName}}</p>
+                          <p class="text-muted mb-0">Active since {{resCompaignGenRsp.activeDate}}</p>
+                        </div>
+                        <div class="client-pic me-3 mb-3 mb-md-0">
+                          <!--<img [src]="profilePicture">-->
+                          <i class="fas fa-circle text-secondary online"></i>
+                        </div>
+                        <div class="mb-3 mb-md-0">
+                          <h3 class="text-primary fw-bold">
+                            {{resCompaignGenRsp.clientName}}
+                          </h3>
+                          <div class="me-3 small">
+                            <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                            Pakistan
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body p-0">
+
+                        <div class="border-y p-4 border-top-0 nav-campaign">
+                          <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link active" id="contractStart-tab" data-bs-toggle="tab"
+                                      data-bs-target="#contractStart" type="button" role="tab" aria-controls="contractStart"
+                                      aria-selected="true">
+                                Contract Section
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="timeduration-tab" data-bs-toggle="tab"
+                                      data-bs-target="#timeduration" type="button" role="tab" aria-controls="timeduration"
+                                      aria-selected="false">
+                                Time Duration
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="msg-tab" data-bs-toggle="tab"
+                                      data-bs-target="#msg" type="button" role="tab" aria-controls="msg"
+                                      aria-selected="false">
+                                Messages and files
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="feedback-tab" data-bs-toggle="tab"
+                                      data-bs-target="#feedback" type="button" role="tab" aria-controls="feedback"
+                                      aria-selected="false">
+                                Feedback
+                              </button>
+                            </li>
+                          </ul>
+                          <div class="tab-content py-3" id="myTabContent">
+                            <div class="tab-pane fade show active" id="contractStart" role="tabpanel"
+                                 aria-labelledby="contractStart-tab">
+                              <table class="table">
+                                <tr>
+                                  <td>In Escrow</td>
+                                  <td>Release</td>
+                                  <td>Remaining</td>
+                                  <td><b>Total Budget</b></td>
+                                </tr>
+                                <tr>
+                                  <td>${{resCompaignGenRsp.escrow}}</td>
+                                  <td>${{resCompaignGenRsp.release}}</td>
+                                  <td>${{resCompaignGenRsp.remaining}}</td>
+                                  <td><b>${{resCompaignGenRsp.totalBudget}}</b></td>
+                                </tr>
+                              </table>
+                            </div>
+                            <div class="tab-pane fade" id="timeduration" role="tabpanel" aria-labelledby="timeduration-tab">
+                              {{resCompaignGenRsp.timeDuration}}
+                            </div>
+                            <div class="tab-pane fade" id="msg" role="tabpanel" aria-labelledby="msg-tab">
+                              Messages
+                            </div>
+                            <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+                              Feedback Detail
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="p-4">
+                          <div class="d-md-flex align-items-center">
+                            <div>
+                              <a class="btn btn-primary" [ngClass]="btnStart?'disabled':''" type="button" (click)="sendContract()">
+                                Request Contract
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4 justify-content-center" *ngIf="!resCompaignGenRsp.compaignName">
+                  No Record Found
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="ongoing" role="tabpanel" aria-labelledby="ongoing-tab">
+              <div class="card-body">
+                <div class="card card-campaign">
+                  <div class="input-group inner-main-search">
+                    <div style="margin-right:33px" class="col-md-3">
+                      <select [(ngModel)]="compaignIDOng" (change)="compaignChangeOngoing()" class="form-control form-select form-select-sm rounded select-rejected">
+                        <option value="0" selected>Select Compaign</option>
+                        <option *ngFor="let p of resCompaignOnGoingLst" [value]="p.compaignID">{{p.compaignName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4 justify-content-center" *ngIf="resCompaignGenRsp.compaignName">
+                  <div class="col-lg-12 col-xl-12">
+                    <div class="card">
+                      <div class="bg-white card-header d-md-flex py-3 align-items-center">
+                        <div class="me-auto">
+                          <p class="fw-bold mb-1">{{resCompaignGenRsp.compaignName}}</p>
+                          <p class="text-muted mb-0">Active since {{resCompaignGenRsp.activeDate}}</p>
+                        </div>
+                        <div class="client-pic me-3 mb-3 mb-md-0">
+                          <!--<img [src]="profilePicture">-->
+                          <i class="fas fa-circle text-secondary online"></i>
+                        </div>
+                        <div class="mb-3 mb-md-0">
+                          <h3 class="text-primary fw-bold">
+                            {{resCompaignGenRsp.clientName}}
+                          </h3>
+                          <div class="me-3 small">
+                            <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                            Pakistan
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body p-0">
+
+                        <div class="border-y p-4 border-top-0 nav-campaign">
+                          <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link active" id="ContractOng-tab" data-bs-toggle="tab"
+                                      data-bs-target="#ContractOng" type="button" role="tab" aria-controls="ContractOng"
+                                      aria-selected="true">
+                                Contract Section
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="TimeOng-tab" data-bs-toggle="tab"
+                                      data-bs-target="#TimeOng" type="button" role="tab" aria-controls="TimeOng"
+                                      aria-selected="false">
+                                Time Duration
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="msgsOng-tab" data-bs-toggle="tab"
+                                      data-bs-target="#msgsOng" type="button" role="tab" aria-controls="msgsOng"
+                                      aria-selected="false">
+                                Messages and files
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="feedbackOng-tab" data-bs-toggle="tab"
+                                      data-bs-target="#feedbackOng" type="button" role="tab" aria-controls="feedbackOng"
+                                      aria-selected="false">
+                                Feedback
+                              </button>
+                            </li>
+                          </ul>
+                          <div class="tab-content py-3" id="myTabContent">
+                            <div class="tab-pane fade show active" id="ContractOng" role="tabpanel"
+                                 aria-labelledby="ContractOng-tab">
+                              <table class="table">
+                                <tr>
+                                  <td>In Escrow</td>
+                                  <td>Release</td>
+                                  <td>Remaining</td>
+                                  <td><b>Total Budget</b></td>
+                                </tr>
+                                <tr>
+                                  <td>${{resCompaignGenRsp.escrow}}</td>
+                                  <td>${{resCompaignGenRsp.release}}</td>
+                                  <td>${{resCompaignGenRsp.remaining}}</td>
+                                  <td><b>${{resCompaignGenRsp.totalBudget}}</b></td>
+                                </tr>
+                              </table>
+                            </div>
+                            <div class="tab-pane fade" id="TimeOng" role="tabpanel" aria-labelledby="TimeOng-tab">
+                              {{resCompaignGenRsp.timeDuration}}
+                            </div>
+                            <div class="tab-pane fade" id="msgsOng" role="tabpanel" aria-labelledby="msgsOng-tab">
+                              Messages
+                            </div>
+                            <div class="tab-pane fade" id="feedbackOng" role="tabpanel" aria-labelledby="feedbackOng-tab">
+                              Feedback Detail
+                            </div>
+                          </div>
+                        </div>
+                        <table class="table table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th>Client Name</th>
+                              <th>Shift Time </th>
+                              <th>Start Time </th>
+                              <th>End Time </th>
+                              <th>Time Zone</th>
+                              <th>Expected Leads</th>
+                              <th>Days</th>
+                              <th>Contract Status</th>
+                              <th></th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let p of resOnGoingLst">
+                              <td>
+                                {{p.clientName}}
+                              </td>
+                              <td>{{p.shiftTime}}</td>
+                              <td>{{p.startTime}}</td>
+                              <td>{{p.endTime}}</td>
+                              <td>{{p.timeZone}}</td>
+                              <td>{{p.expectedLeads}}</td>
+                              <td>{{p.days}}</td>
+                              <td>{{p.contractStatus}}</td>
+                              <!--*ngIf="p.btnSubmit"-->
+                              <td><button class="btn btn-primary" (click)="leadPopup(p)">Sale</button></td>
+                              <td><button type="button" (click)="detailOpen(p)" class="btn btn-primary">View</button></td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4 justify-content-center" *ngIf="!resCompaignGenRsp.compaignName">
+                  No Record Found
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+              <div class="card-body">
+                <div class="card card-campaign">
+                  <div class="input-group inner-main-search">
+                    <div style="margin-right:33px" class="col-md-3">
+                      <select [(ngModel)]="compaignIDCompleted" (change)="compaignCompleteChange()" class="form-control form-select form-select-sm rounded select-rejected">
+                        <option value="0" selected>Select Compaign</option>
+                        <option *ngFor="let p of compaignLstCompleted" [value]="p.compaignID">
+                          {{p.compaignName}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4 justify-content-center" *ngIf="resCompaignGenRsp.compaignName">
+                  <div class="col-lg-12 col-xl-10">
+                    <div class="card">
+                      <div class="bg-white card-header d-md-flex py-3 align-items-center">
+                        <div class="me-auto">
+                          <p class="fw-bold mb-1">{{resCompaignGenRsp.compaignName}}</p>
+                          <p class="text-muted mb-0">Active since {{resCompaignGenRsp.activeDate}}</p>
+                        </div>
+                        <div class="client-pic me-3 mb-3 mb-md-0">
+                          <!--<img [src]="profilePicture">-->
+                          <i class="fas fa-circle text-secondary online"></i>
+                        </div>
+                        <div class="mb-3 mb-md-0">
+                          <h3 class="text-primary fw-bold">
+                            {{resCompaignGenRsp.clientName}}
+                          </h3>
+                          <div class="me-3 small">
+                            <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                            Pakistan
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body p-0">
+
+                        <div class="border-y p-4 border-top-0 nav-campaign">
+                          <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link active" id="completedhome-tab" data-bs-toggle="tab"
+                                      data-bs-target="#completedhome" type="button" role="tab" aria-controls="completedhome"
+                                      aria-selected="true">
+                                Contract Section
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="completedprofile-tab" data-bs-toggle="tab"
+                                      data-bs-target="#completedprofile" type="button" role="tab" aria-controls="completedprofile"
+                                      aria-selected="false">
+                                Time Duration
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="completedcontact-tab" data-bs-toggle="tab"
+                                      data-bs-target="#completedcontact" type="button" role="tab" aria-controls="completedcontact"
+                                      aria-selected="false">
+                                Messages and files
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation" (click)="ShowFeedBack()">
+                              <button class="nav-link" id="completedfeedback-tab" data-bs-toggle="tab"
+                                      data-bs-target="#completedfeedback" type="button" role="tab" aria-controls="completedfeedback"
+                                      aria-selected="false">
+                                Feedback
+                              </button>
+                            </li>
+                          </ul>
+                          <div class="tab-content py-3" id="myTabContent">
+                            <div class="tab-pane fade show active" id="completedhome" role="tabpanel"
+                                 aria-labelledby="completedhome-tab">
+                              <table class="table">
+                                <tr>
+                                  <td>In Escrow</td>
+                                  <td>Release</td>
+                                  <td>Remaining</td>
+                                  <td><b>Total Budget</b></td>
+                                </tr>
+                                <tr>
+                                  <td>${{resCompaignGenRsp.escrow}}</td>
+                                  <td>${{resCompaignGenRsp.release}}</td>
+                                  <td>${{resCompaignGenRsp.remaining}}</td>
+                                  <td><b>${{resCompaignGenRsp.totalBudget}}</b></td>
+                                </tr>
+                              </table>
+                            </div>
+                            <div class="tab-pane fade" id="completedprofile" role="tabpanel" aria-labelledby="completedprofile-tab">
+                              {{resCompaignGenRsp.timeDuration}}
+                            </div>
+                            <div class="tab-pane fade" id="completedcontact" role="tabpanel" aria-labelledby="completedcontact-tab">
+                              Messages
+                            </div>
+                            <div class="tab-pane fade" id="completedfeedback" role="tabpanel" aria-labelledby="completedfeedback-tab">
+                              <div *ngIf="contractStatusFeedback=='Completed' || contractStatusFeedback=='Cancelled'" class="row">
+                                <div class="col-md-6">
+                                  <div class=" media" *ngFor="let p of FeedbackContractRsp">
+                                    <div class="media-left">
+                                      <img [src]="p.userPic" class="media-object" style="width:40px">
+                                    </div>
+                                    <div class="media-body">
+                                      <h4 class="media-heading title">{{p.userName}}</h4>
+                                      <p class="komen">
+                                        {{p.commentTxt}}<br>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div class="row" *ngIf="feedBackStatusFlag">
+                                    <div class="">
+                                      <textarea type="text" class="input" placeholder="Write a comment" [(ngModel)]="commentTxt"></textarea>
+                                      <button (click)="addComment()" class='primaryContained float-right' type="submit">Add Comment</button>
+                                    </div><!-- End col -->
+                                  </div><!--End Row -->
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="ratings">
+                                    <rating [max]="max" (click)="starRateInsert()" [(ngModel)]="rate"></rating>
+                                  </div>
+                                  <b>(<i>Rate: </i> {{rate}})</b>
+                                  <b>(<i>Avg Rate: </i>{{avgRateStar}})</b>
+
+                                </div>
+                              </div>
+                              <div *ngIf="contractStatusFeedback=='ongoing'">
+                                Feedback is locked in case of either Contract completed or cancelled
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <table class="table table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th>Call Center Name</th>
+                              <th>Shift Time </th>
+                              <th>Start Time </th>
+                              <th>End Time </th>
+                              <th>Time Zone</th>
+                              <th>Expected Leads</th>
+                              <th>Days</th>
+                              <th>Contract Status</th>
+                              <th>View Detail</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let p of ContractClientRspOrg">
+                              <td>{{p.callCenterName}}</td>
+                              <td>{{p.shiftTime}} </td>
+                              <td>{{p.startTime}} </td>
+                              <td>{{p.endTime}} </td>
+                              <td>{{p.timeZone}}</td>
+                              <td>{{p.expectedLeads}}</td>
+                              <td>{{p.days}}</td>
+                              <td>{{p.contractStatus}}</td>
+                              <td><button type="button" (click)="detailOpen(p)" class="btn btn-primary">View</button></td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4 justify-content-center" *ngIf="!resCompaignGenRsp.compaignName">
+                  No Record Found
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+              <div class="card-body">
+                <div class="card card-campaign">
+                  <div class="input-group inner-main-search">
+                    <div style="margin-right:33px" class="col-md-3">
+                      <select [(ngModel)]="compaignIDCancelled" (change)="compaignCancelledChange()" class="form-control form-select form-select-sm rounded select-rejected">
+                        <option value="0" selected>Select Compaign</option>
+                        <option *ngFor="let p of compaignLstCancelled" [value]="p.compaignID">
+                          {{p.compaignName}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4 justify-content-center" *ngIf="resCompaignGenRsp.compaignName">
+                  <div class="col-lg-12 col-xl-10">
+                    <div class="card">
+                      <div class="bg-white card-header d-md-flex py-3 align-items-center">
+                        <div class="me-auto">
+                          <p class="fw-bold mb-1">{{resCompaignGenRsp.compaignName}}</p>
+                          <p class="text-muted mb-0">Active since {{resCompaignGenRsp.activeDate}}</p>
+                        </div>
+                        <div class="client-pic me-3 mb-3 mb-md-0">
+                          <!--<img [src]="profilePicture">-->
+                          <i class="fas fa-circle text-secondary online"></i>
+                        </div>
+                        <div class="mb-3 mb-md-0">
+                          <h3 class="text-primary fw-bold">
+                            {{resCompaignGenRsp.clientName}}
+                          </h3>
+                          <div class="me-3 small">
+                            <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                            Pakistan
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body p-0">
+
+                        <div class="border-y p-4 border-top-0 nav-campaign">
+                          <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link active" id="Cancelhome-tab" data-bs-toggle="tab"
+                                      data-bs-target="#Cancelhome" type="button" role="tab" aria-controls="Cancelhome"
+                                      aria-selected="true">
+                                Contract Section
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="Cancelprofile-tab" data-bs-toggle="tab"
+                                      data-bs-target="#Cancelprofile" type="button" role="tab" aria-controls="Cancelprofile"
+                                      aria-selected="false">
+                                Time Duration
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="Cancelcontact-tab" data-bs-toggle="tab"
+                                      data-bs-target="#Cancelcontact" type="button" role="tab" aria-controls="Cancelcontact"
+                                      aria-selected="false">
+                                Messages and files
+                              </button>
+                            </li>
+                            <li class="nav-item" role="presentation" (click)="ShowFeedBack()">
+                              <button class="nav-link" id="Cancelfeedback-tab" data-bs-toggle="tab"
+                                      data-bs-target="#Cancelfeedback" type="button" role="tab" aria-controls="Cancelfeedback"
+                                      aria-selected="false">
+                                Feedback
+                              </button>
+                            </li>
+                          </ul>
+                          <div class="tab-content py-3" id="myTabContent">
+                            <div class="tab-pane fade show active" id="Cancelhome" role="tabpanel"
+                                 aria-labelledby="Cancelhome-tab">
+                              <table class="table">
+                                <tr>
+                                  <td>In Escrow</td>
+                                  <td>Release</td>
+                                  <td>Remaining</td>
+                                  <td><b>Total Budget</b></td>
+                                </tr>
+                                <tr>
+                                  <td>${{resCompaignGenRsp.escrow}}</td>
+                                  <td>${{resCompaignGenRsp.release}}</td>
+                                  <td>${{resCompaignGenRsp.remaining}}</td>
+                                  <td><b>${{resCompaignGenRsp.totalBudget}}</b></td>
+                                </tr>
+                              </table>
+                            </div>
+                            <div class="tab-pane fade" id="Cancelprofile" role="tabpanel" aria-labelledby="Cancelprofile-tab">
+                              {{resCompaignGenRsp.timeDuration}}
+                            </div>
+                            <div class="tab-pane fade" id="Cancelcontact" role="tabpanel" aria-labelledby="Cancelcontact-tab">
+                              Messages
+                            </div>
+                            <div class="tab-pane fade" id="Cancelfeedback" role="tabpanel" aria-labelledby="Cancelfeedback-tab">
+                              <div *ngIf="contractStatusFeedback=='Completed' || contractStatusFeedback=='Cancelled'" class="row">
+                                <div class="col-md-6">
+                                  <div class=" media" *ngFor="let p of FeedbackContractRsp">
+                                    <div class="media-left">
+                                      <img [src]="p.userPic" class="media-object" style="width:40px">
+                                    </div>
+                                    <div class="media-body">
+                                      <h4 class="media-heading title">{{p.userName}}</h4>
+                                      <p class="komen">
+                                        {{p.commentTxt}}<br>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div class="row" *ngIf="feedBackStatusFlag">
+                                    <div class="">
+                                      <textarea type="text" class="input" placeholder="Write a comment" [(ngModel)]="commentTxt"></textarea>
+                                      <button (click)="addComment()" class='primaryContained float-right' type="submit">Add Comment</button>
+                                    </div><!-- End col -->
+                                  </div><!--End Row -->
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="ratings">
+                                    <rating [max]="max" (click)="starRateInsert()" [(ngModel)]="rate"></rating>
+                                  </div>
+                                  <b>(<i>Rate: </i> {{rate}})</b>
+                                  <b>(<i>Avg Rate: </i>{{avgRateStar}})</b>
+
+                                </div>
+                              </div>
+                              <div *ngIf="contractStatusFeedback!='Completed' || contractStatusFeedback!='Cancelled'">
+                                Feedback is locked in case of either Contract completed or cancelled
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <table class="table table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th>Call Center Name</th>
+                              <th>Shift Time </th>
+                              <th>Start Time </th>
+                              <th>End Time </th>
+                              <th>Time Zone</th>
+                              <th>Expected Leads</th>
+                              <th>Days</th>
+                              <th>Contract Status</th>
+                              <th>View Detail</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let p of ContractClientRspOrg">
+                              <td>{{p.callCenterName}}</td>
+                              <td>{{p.shiftTime}} </td>
+                              <td>{{p.startTime}} </td>
+                              <td>{{p.endTime}} </td>
+                              <td>{{p.timeZone}}</td>
+                              <td>{{p.expectedLeads}}</td>
+                              <td>{{p.days}}</td>
+                              <td>{{p.contractStatus}}</td>
+                              <td><button type="button" (click)="detailOpen(p)" class="btn btn-primary">View</button></td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4 justify-content-center" *ngIf="!resCompaignGenRsp.compaignName">
+                  No Record Found
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- modal -->
+  <div class="modal fade" id="leadpopups" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Submit Leads</h5>
+          <button type="button" class="close" (click)="leadPopupCross()" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="inputSuccess2">Expected Leads</label>
+            <input [(ngModel)]="saleTxt" type="text" class="form-control" id="inputSuccessleads">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="saveSaleSubmited()">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="leadPopupCross()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="detailContactpopup" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sumbitted Leads Detail</h5>
+          <button type="button" class="close" (click)="detailContactPopupCross()" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="overflow:auto;height:300px">
+          <div class="row">
+            <div class="col-md-6">
+              <b>Expected Leads</b>:)  {{exp_Lead}}
+            </div>
+            <div class="col-md-6">
+              <b>Remaining Leads</b>:) {{rem_Leads}}
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <table class="table table-striped mb-0">
+              <thead>
+                <tr>
+                  <th>Lead Submitted</th>
+                  <th>Comment</th>
+                  <th>Status</th>
+                  <th>Created Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of _contractSubmittedReponseOrg">
+                  <td>{{p.expectedLeads}}</td>
+                  <td>{{p.comment}}</td>
+                  <td>{{p.saleSUbmittedStatus}}</td>
+                  <td>{{p.createdDate}}</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="detailContactPopupCross()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

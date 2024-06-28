@@ -1,0 +1,42 @@
+<app-header></app-header>
+
+<div class="inner-section">
+  <div class="container">
+
+
+    <div class="row mt-4">
+      <div class="col-lg-2">
+
+      </div>
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="bg-white card-header d-flex py-3">
+            <h4 class="mb-0 text-primary fw-bold">{{proposalDetail.compaignName || 'N/A'}}</h4>
+
+          </div>
+          <div class="card-body px-0">
+            <div class="card card-campaign">
+              <div class="card-header bg-white border-0 px-0 pb-0">
+                <h5 class="text-primary mb-4 fw-bold">Proposal Details</h5>
+                <b>Posted On:</b> <p>{{proposalDetail.createdDate || 'N/A'}}</p>
+                <b>Cover Letter:</b> <p [innerHtml]="proposalDetail.coverLetter">{{proposalDetail.coverLetter || 'N/A'}}</p>
+                <b>Proposal Status:</b> <p>{{proposalDetail.proposalStatus || 'N/A'}}</p>
+                <b>Number Of Sales:</b> <p>{{proposalDetail.numberofSales || 'N/A'}}</p>
+                <b>Sale Rate:</b> <p>{{proposalDetail.salesRate || 'N/A'}}</p>
+                <b *ngIf="proposalDetail.answer.length>0">Questions/Answer</b><br />
+                <div *ngFor="let qsts of proposalDetail.answer;let index=index;">
+                  <b>Q{{index+1}}: {{qsts.qst || 'N/A'}}</b>
+                  <p>Ans: {{qsts.answer || 'N/A'}}</p>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>

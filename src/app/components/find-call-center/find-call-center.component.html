@@ -1,0 +1,172 @@
+<app-header></app-header>
+<div class="container">
+  <ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>
+  <div class="row mt-5">
+    <div class="col-lg-3">
+      <div class="card">
+        <div class="card-header">
+          Filter By
+        </div>
+        <div class="card-body">
+          <label>Name</label>
+          <input type="text" (change)="resetPageNo()" [(ngModel)]="nameCallCenter" class="form-control mb-3" />
+          <label>Title</label>
+          <input type="text" [(ngModel)]="title" class="form-control mb-3" />
+          <label>Tag</label>
+          <input type="text" [(ngModel)]="tag" class="form-control" />
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <input type="button" class="btn btn-primary" (click)="GetInvitedWorker()" value="Apply" />
+          <input type="button" class="btn btn-primary" (click)="Reset()"  value="Reset" />
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <div class="card">
+        <div class="card-body nav-campaign p-0">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Search</button>
+            </li>
+
+          </ul>
+          <div class="tab-content py-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="card card-campaign">
+                <div class="input-group inner-main-search">
+                  <input type="search" class="form-control" placeholder="Search Your Call Center"
+                         name="search" [(ngModel)]="searchText" autocomplete="off"
+                         aria-label="Recipient's username" aria-describedby="basic-addon2">
+                  <span class="input-group-text bg-secondary text-white cursor-pointer px-4" id="basic-addon2"><i class="fas fa-search fa-lg"></i></span>
+                </div>
+                <!-- <a [routerLink]="" (click)="InviteCoworkers()" class="mt-2">Advanced Search</a> -->
+              </div>
+
+              <div class="card card-campaign" *ngFor="let p of (inviteResponse | filter:searchText) | paginate:config_InviteWorkerList">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="card-header d-flex bg-white border-0 px-0 pb-0">
+                      <img [src]="p.userImage" width="60" height="60" />
+                      <div class="ms-4">
+                        <h5 class="text-primary mb-0 fw-bold cursor-pointer campaign-heading" (click)="ProfilePopup(p)">{{p.coworkerName}}</h5>
+                        <small>{{p.designation}}</small>
+                      </div>
+                     
+                    </div>
+                  </div>
+                  <div class="col-md-4" style="margin-top:12px">
+                    <div class="d-flex mb-3" *ngIf="!p.invitationStatus">
+                      <button style="margin-left:auto" class="btn btn-outline-primary me-2" (click)="SendInvitation(p)">Invite</button>
+                      <!--<button class="btn btn-primary" (click)="ReviewPopupOpen(proposal)">Hire</button>-->
+                    </div>
+                    <div class="d-flex mb-3" *ngIf="p.invitationStatus=='Accept'">
+                      <button class="btn btn-primary" (click)="openMessages()" style="margin-left:auto">
+                        Message
+                      </button>
+                    </div>
+                    <div class="d-flex mb-3" *ngIf="p.invitationStatus=='Sended'">
+                      <button class="btn btn-primary" style="margin-left:auto">
+                        Invited
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="" *ngIf="inviteResponse.length>0">
+                <pagination-controls class="custom-pagination dialog-pagination" id="pg_Worker"
+                                     (pageChange)="onPageChanged($event)" directionLinks="false"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <!--PopUp User Profile-->
+  <div class="popup">
+    <!-- <a href="javascript:void(0)" class="btn btn-outline-primary" data-toggle="modal" data-target="#basicModal">Compaign Detail</a> -->
+    <!-- modal -->
+    <div class="modal fade"
+         id="ProfileModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="basicModal"
+         aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content" style="width: 740px">
+          <button type="button"
+                  class="close"
+                  (click)="ProposalModalClose()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="body-content">
+            <div class="">
+              <div class="card">
+                <div class="card-body p-0">
+                  <div class="
+                      bg-white
+                      card-header
+                      d-md-flex
+                      py-3
+                      align-items-center
+                    ">
+                    <div class="profile-pic me-3 mb-3 mb-md-0">
+                      <img [src]="profilePicture" />
+                      <i class="fas fa-circle text-secondary online"></i>
+                    </div>
+                    <div class="mb-3 mb-md-0">
+                      <h2 class="text-primary fw-bold">
+                        {{ profileViewerReq.coworkerName }}
+                      </h2>
+                      <div class="me-3 small">
+                        <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                        Islamabad Pakistan
+                      </div>
+                      <div class="d-flex align-items-center mt-2">
+
+                        <ul class="list-unstyled d-flex list-feedback mb-0">
+                          <li><i class="far fa-thumbs-down"></i></li>
+                          <li><i class="far fa-heart"></i></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card card-campaign pt-3">
+                  <h5 class="text-primary fw-bold">Applicent Details :</h5>
+                  <p>
+                    {{ profileViewerReq.applicantDetail }}
+                  </p>
+                </div>
+                <div class="card card-campaign pt-3">
+                  <h5 class="text-primary fw-bold">Propsal Detail</h5>
+                  <p>${{ profileViewerReq.proposedBid }} Proposed Bid</p>
+                  <h5 class="text-primary fw-bold">Cover Letter</h5>
+                  <p class="mb-0 text-danger">
+                    What is your favourite Technology.
+                  </p>
+                  <p>
+                    {{ profileViewerReq.favUserTechn }}
+                  </p>
+                  <p [(innerHtml)]="profileViewerReq.description">
+                    {{ profileViewerReq.description }}
+                  </p>
+                </div>
+                <div class="buttons-end ms-auto my-4">
+                  <a [routerLink]=""
+                     (click)="openMessages()"
+                     class="btn btn-primary"
+                     type="button">Send Message</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

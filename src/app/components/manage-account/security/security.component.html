@@ -1,0 +1,72 @@
+<div class="card">
+    <div class="bg-white card-header d-flex py-3 align-items-center">
+        <h5 class="mb-0  fw-bold">Change Password</h5>
+    </div>
+    <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+
+        <div class="card-body px-0">
+            <div class="px-3 pb-3">
+                <div class="row align-items-center mb-4">
+                    <div class="col-md-5">
+                        <label class="col-form-label">Current Password</label>
+                    </div>
+                    <div class="col-md-7">
+                        <input type="password" formControlName="oldPassword" class="form-control" [(ngModel)]="_changePassword.oldPassword"
+                        [ngClass]="{ 'is-invalid': submitted && f.oldPassword.errors }" />
+                        <div *ngIf="submitted && f.oldPassword.errors" class="invalid-feedback">
+                            <div *ngIf="f.oldPassword.errors.required">Old Password is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-4">
+                    <div class="col-md-5">
+                        <label class="col-form-label">New Password</label>
+                    </div>
+                    <div class="col-md-7">
+                        <input type="password" formControlName="newPassword" class="form-control" [(ngModel)]="_changePassword.newPassword"
+                        [ngClass]="{ 'is-invalid': submitted && f.newPassword.errors }" />
+                        <div *ngIf="submitted && f.newPassword.errors" class="invalid-feedback">
+                            <div *ngIf="f.newPassword.errors.required">New Password is required</div>
+                            <div *ngIf="f.newPassword.errors.minlength">Password must be at least 8 characters</div>
+                        </div>
+                        <div class="invalid-feedback" *ngIf="passwordForm.get('newPassword').hasError('passwordStrength')">
+                            {{passwordForm.get('newPassword').errors['passwordStrength']}}
+                           </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3">
+                    <div class="col-md-5">
+                        <label class="col-form-label">Confirm Password</label>
+                    </div>
+                    <div class="col-md-7">
+                        <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+                        <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                            <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+                            <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="offset-md-5 col-md-7">
+                        <p class="text-muted small">8 characters or longer. Combine upper and
+                            lowercase letters and numbers.</p>
+
+                    </div>
+                </div>
+
+
+                <div class="text-end mt-3">
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </form>
+</div>
+
+
+
+<ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>

@@ -1,0 +1,96 @@
+<div class="login-card d-sm-flex min-vh-100">
+  <div class="right_panel order-sm-2 py-4">
+    <h2 class="text-primary fw-bold mb-5">Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="input-group mb-4 input-group-lg">
+        <span class="input-group-text" id="basic-addon1"
+          ><img height="26" src="assets/images/icons/user-icon.svg"
+        /></span>
+        <input
+          type="text"
+          formControlName="username"
+          class="form-control"
+          placeholder="Enter Email"
+          required
+          [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+        />
+      </div>
+      <div class="input-group mb-4 input-group-lg">
+        <span class="input-group-text" id="basic-addon1"
+          ><img height="26" src="assets/images/icons/key-icon.svg"
+        /></span>
+        <input
+          type="password"
+          formControlName="password"
+          id="userPassword"
+          class="form-control rounded-end"
+          placeholder="Enter Password"
+          required
+          [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+        />
+        <i
+          class="fas fa-eye Show_Password text-primary"
+          (click)="onClickEye()"
+        ></i>
+      </div>
+      <div>
+        <a
+          [routerLink]="['/forgotPassword']"
+          routerLinkActive="router-link-active"
+          >Forgot Password?</a
+        >
+      </div>
+      <Button type="submit" class="btn btn-primary btn-lg my-4">Login</Button>
+      <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Congrates Modal
+      </button> -->
+      <div class="social-links">
+        <!-- <ul class="list-unstyled d-flex justify-content-center">
+          <li>
+            <a class="linkedin" (click)="login()"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
+          </li>
+          <li>
+            <a class="google" #loginRef><i class="fab fa-google"></i></a>
+          </li>
+        </ul> -->
+      </div>
+      <p class="border-bottom pb-4 mt-5">
+        By Creating an account, you agree with our
+        <a class="">Terms of Service</a> & <a class="">Privacy Policy</a>
+      </p>
+      <p>
+        Already Have an Account.? <a class="" routerLink="/signup">Sign Up</a>
+      </p>
+    </form>
+  </div>
+  <div class="left_panel flex-column bg-light">
+    <div class="logo">
+      <a  routerLink=""><img height="35" src="/assets/images/callbit-logo.svg"></a>
+    </div>
+    <div class="login-banner">
+      <img class="img-fluid" src="./assets/images/login-img.png" />
+    </div>
+  </div>
+</div>
+
+<!-- Congrates Modal -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body congrates-modal d-sm-flex align-items-center pt-0 m-auto">
+          <div class="card border-0">
+            <img height="270" class="card-img-top" src="/assets/images/congrates-img.svg">
+            <div class="card-body shadow-sm">
+              <h2>Congratulation</h2>
+              <p class="card-text">Your account has been successfully created.</p>
+            </div>
+          </div>
+      </div>
+      
+    </div>
+  </div>
+</div> -->
+<ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>

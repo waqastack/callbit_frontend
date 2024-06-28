@@ -1,0 +1,187 @@
+<p>submit-proposal works!</p>
+<app-header></app-header>
+
+<div class="inner-section">
+    <div class="container">
+
+
+        <div class="row mt-4">
+            <div class="col-lg-2">
+
+            </div>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="bg-white card-header d-flex py-3">
+                        <h4 class="mb-0 text-primary fw-bold">Submit A Proposal</h4>
+                        
+                    </div>
+                    <div class="card-body px-0">
+                        <div class="card card-campaign">
+                            <div class="card-header bg-white border-0 px-0 pb-0">
+                                <h5 class="text-primary mb-4 fw-bold">Campaign Details</h5>
+                                <div class="d-flex mb-3">
+                                    <!-- <p class="mb-0">Campaign Name</p> -->
+                                    <p class="mb-0">{{_compaign.title || 'N/A'}}</p>
+                                    <!-- <span class="badge rounded-pill bg-primary align-items-center ms-3 d-flex"><img
+                                            class="me-1" src="assets/images/icons/tick.svg">
+                                     <p class="mb-0">Final Expense</p> 
+                                    </span> -->
+                                    <p class="ms-auto mb-0">Posted May 26, 2021</p>
+                                </div>
+                                <!-- <p>Deliver great work. Get notified when you get an order and use our system to discuss details with customers.</p> -->
+                                <p [(innerHtml)]="_compaign.description">{{_compaign.description || 'N/A'}}</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="d-flex mb-2">
+                                            <div class="me-3">
+                                                <i class="fas fa-check-circle text-secondary"></i>
+                                                <span class="text-muted" style="margin-left: 5px;">Pay Per Transfer</span>
+                                            </div>
+                                        </div>
+                                        <p class="small text-muted">Define Payment Before Campaign Begins
+                                            and Pay only when Campaign is Start</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex mb-2">
+                                            <div class="me-3">
+                                                <i class="fas fa-check-circle text-secondary"></i>
+                                                <span class="text-muted" style="margin-left: 5px;">Less than a month</span>
+                                            </div>
+                                        </div>
+                                        <p class="small text-muted">Campaign Length</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="d-flex mb-2">
+                                            <div class="me-3">
+                                                <i class="fas fa-check-circle text-secondary"></i>
+                                                <span class="text-muted" style="margin-left: 5px;">Expert</span>
+                                            </div>
+                                        </div>
+                                        <p class="small text-muted">Expert Level</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card card-campaign">
+                            <div class="card-header bg-white border-0 px-0 pb-0">
+                                <h5 class="text-primary mb-4 fw-bold">Terms</h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <p class="mb-0">What is the rate you'd like to bid for this Campaign ?</p>
+                                        <p>Your Estimated Budget</p>
+                                        <p class="small">Total amount the client will see on your Campaign</p>
+                                        <div class="row  mb-3">
+                                            <div class="mb-3 mb-md-0 col-md-6">
+                                                <label class="form-label">Number of Sales</label>
+                                                <input class="form-control rounded" min="0" [ngClass]="{ 'is-invalid': isNoOfSales }"
+                                                (change)="CalculatePercentage()"
+                                                [(ngModel)]="_submitProposalModel.numberofSales" (input)="CheckViladation('NS')" (change)="CalculatePercentage()" [(ngModel)]="noOfSales" type="number">
+                                                <div *ngIf="isNoOfSales" class="invalid-feedback">
+                                                    <div>Number of Sales is required</div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 mb-md-0 col-md-6">
+                                                <label class="form-label">Sales Rate</label>
+                                                <input class="form-control rounded" min="0" (input)="CheckViladation('SR')" (change)="CalculatePercentage()" [(ngModel)]="_submitProposalModel.salesRate"
+                                                [ngClass]="{ 'is-invalid': isSalesRate }" type="number">
+                                                <div *ngIf="isSalesRate" class="invalid-feedback">
+                                                    <div>Sales Rate is required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <table class="table text-muted">
+                                            <tr>
+                                                <td cl><b>Service Fee</b></td>
+                                                <td>3%</td>
+                                            </tr>
+                                            <hr>
+                                            <tr>
+                                                <td><b>You'll Receive</b></td>
+                                                <td>{{resultTotal}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="offset-md-1 col-md-3">
+                                        <img src="assets/images/icons/shield.svg">
+                                    </div>
+                                </div>
+                                
+                                
+                                
+                                
+                            </div>
+                        </div>
+                        <div class="card card-campaign">
+                          <div class="card-header bg-white border-0 px-0 pb-0">
+                            <h5 class="text-primary mb-4 fw-bold">Additional Details</h5>
+                            <p class="fw-bold mb-0">Cover Letter</p>
+                            <p>
+                              Deliver great work. Get notified when you get an order and use our system to discuss
+                              details with customers.
+                            </p>
+                            <!--<angular-editor [(ngModel)]="_submitProposalModel.coverLetter" rows="8" class="form-control" (input)="CheckViladation('CL')"
+  [config]="config" [ngClass]="{ 'is-invalid': isCoverLetterText }" placeholder="Add cover letter"></angular-editor>-->
+                            <ckeditor [editor]="editor" [(ngModel)]="_submitProposalModel.coverLetter" rows="8" class="form-control"></ckeditor>
+                            <div *ngIf="isCoverLetterText" class="invalid-feedback">
+                              <div>Cover Letter is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card card-campaign">
+                          <div class="card-header bg-white border-0 px-0 pb-0">
+                            <h5 class="text-primary mb-4 fw-bold">Questions</h5>
+                            <p *ngFor="let ques of _compaign.questions; let i = index">
+                              {{ i + 1 }}. {{ ques.question }}
+                              <input
+                                type="text"
+                                [name]="'answer' + ques.id"
+                                class="form-control"
+                                placeholder="Your answer..."
+                              />
+                            </p>
+                            <p *ngIf="_compaign.questions && _compaign.questions.length == 0">N/A</p>
+                            <p *ngIf="!areQuestionsAnswered" style="color: red">
+                              All questions are required
+                            </p>
+                          </div>
+                        </div>
+                        <div class="card card-campaign border-0">
+                            <div class="card-header bg-white border-0 px-0 pb-0">
+                                <h5 class="text-primary mb-4 fw-bold">Additional Details</h5>
+                            </div>
+
+                            <div class="file-upload file mb-3">
+                              {{_submitProposalModel.uploadFile || "drag or upload project images" }}
+                              <input type="file" id="FUImage" name="FUImage" accept=".png, .jpg, .jpeg" (change)="handleFileInput($event.target.files)">
+                            </div>
+
+                            <p>
+                                You may attach up to 10 files under the size of 25MB each. Include work samples or other
+                                documents to support your application. Do not attach your résumé — your Upwork profile
+                                is automatically forwarded to the client with your proposal.
+                            </p>
+                            <div class="mt-3 px-3 buttons-end">
+                                <a class="btn btn-outline-primary me-2" type="button">Cancel</a>
+                                <!-- <a class="btn btn-primary" type="button">Submit a Proposal</a> -->
+                                 <a class="btn btn-primary" (click)="SubmitProposal()">Submit a Proposal</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <!-- <p class="text-muted fw-bold">Proposals</p>
+                <ul class="list-unstyled text-primary proposals-list">
+                    <li><a  >1 active candidacy</a></li>
+                    <li><a  >8 submitted Proposals</a></li>
+                    <li><a  >2 Available proposals</a></li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>

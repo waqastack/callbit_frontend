@@ -1,0 +1,128 @@
+<header class="animated fadeInDown" id="navbar">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3 inner-nav
+   fixed-top befor-login bg-white ">
+    <div class="container">
+      <!-- Brand -->
+      <a class="navbar-brand cursor-pointer"  routerLink="/home"><img height="40" src="/assets/images/callbit-white-logo.svg"></a>
+      
+  
+      <!-- Toggler -->
+      <button class="navbar-toggler mt-2 mt-sm-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <!-- Navigation -->
+        <ul class="navbar-nav ms-auto">
+          <li *ngIf="type==2" class="nav-item">
+            <a class="nav-link active" aria-current="page" routerLink="/home">Find Campaign</a>
+          </li>
+          <li *ngIf="type==1" class="nav-item">
+            <a class="nav-link" routerLink="/my">Post Campaign</a>
+          </li>
+          <li *ngIf="type==1" class="nav-item">
+            <a class="nav-link" routerLink="/FindCallCenter">Find Call Center</a>
+          </li>
+          <!-- <li *ngIf="type==1" class="nav-item">
+            <a class="nav-link" routerLink="/home">Find Compaigns</a>
+          </li> -->
+          <li *ngIf="type==1" class="nav-item">
+            <a class="nav-link" routerLink="/Contracts">Contract</a>
+          </li>
+          <li class="nav-item">
+
+            <a class="nav-link" routerLink="/message">Messages</a>
+          </li>
+          <li *ngIf="type==2" class="nav-item">
+            <a class="nav-link" routerLink="/Invitations">Invitation</a>
+          </li>
+          <li *ngIf="type==2" class="nav-item">
+            <a class="nav-link" routerLink="/HiredRequest">Hired Requests</a>
+          </li>
+          <li *ngIf="type==2" class="nav-item">
+            <a class="nav-link" routerLink="/ClientContractSign">Contracts</a>
+          </li>
+        </ul>
+        <!-- Button -->
+        <ul class="navbar-nav ms-lg-4 flex-row">
+          <!-- <li class="nav-item align-self-center">
+    <div class="d-flex">
+      <label class="text-white me-2 align-self-center">Switch to  Client</label>
+      <div class="form-check form-switch">
+       <label class="form-check-label text-white" for="flexSwitchCheckChecked"></label>
+       <input class="form-check-input"  type="checkbox" id="flexSwitchCheckChecked" checked="changeType">
+     </div>
+    </div>
+
+  </li> -->
+          <li class="nav-item dropdown ms-3">
+            <a class="nav-link dropdown-toggle p-0" (click)="GetAllNotifications()" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="https://i.imgur.com/AC7dgLA.png" alt="" style="width:24px;margin-top:8px">
+              <span *ngIf="activeNotificationCount>99" style="margin-top:8px;margin-left:-3px" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{activeNotificationCount}}++
+                <span class="visually-hidden">unread messages</span>
+              </span>
+              <span *ngIf="activeNotificationCount<100  && activeNotificationCount>0" style="margin-top:8px;margin-left:-3px" class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger">
+                {{activeNotificationCount}}
+                <span class="visually-hidden">unread messages</span>
+              </span>
+            </a>
+            <ul class="dropdown-menu notification-dropdown" aria-labelledby="navbarDropdown">
+              <li class="head text-light bg-dark px-2 d-flex">
+              
+                 
+                    <span>Notifications ({{allNotificationCount}})</span>
+                    <a routerLink="" (click)="ViewAll()" class="ms-auto text-light">View All</a>
+                  
+              
+              </li>
+              <li class="notification-box">
+                <div class="row mb-2" *ngFor="let p of NotificationsResponse">
+                  <div class="col-lg-3 col-sm-3 col-3 text-center">
+                    <img [src]="p.profilePic" height="35" width="35" class="rounded-circle">
+                  </div>
+                  <div class="col-lg-8 col-sm-8 col-8 pe-0">
+                    <strong class="text-info">{{p.fullName}}</strong>
+                    <div>
+                      {{p.msg}}<br>
+                    </div>
+                    <small class="text-warning">{{p.createdDate}}</small>
+                  </div>
+
+                </div>
+
+              </li>
+
+            </ul>
+
+          </li>
+
+          <li class="nav-item dropdown ms-3" style="display:inherit">
+            <a class="nav-link dropdown-toggle p-0" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img class="avartar-user" [src]="profilePic" onerror="this.onerror=null;this.src='assets/images/default-profile-pic.png'">
+            </a>
+            <label style="color:white;margin-top:6px;">{{userName}}</label>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+              <!-- <li><a class="dropdown-item text-success" routerLink="/referral">Refer &amp; Get Up to $100</a></li> -->
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" (click)="setting()">Settings</a></li>
+              <!-- <li><a class="dropdown-item" >Get Paid</a></li> -->
+              <li><a class="dropdown-item">Help &amp; Support</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+  
+      </div>
+  
+    </div>
+  </nav>
+</header>
+<div style="padding-bottom: 3.5rem; margin-top: 20px;"></div>
+<!-- <div *ngIf="isEmailNotVerified" class="alert alert-warning">
+  We have sent you an email. Please click on link in email to verify your
+  email address
+</div> -->

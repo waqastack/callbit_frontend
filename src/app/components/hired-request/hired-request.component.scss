@@ -1,0 +1,68 @@
+.border-container {
+  position: relative;
+}
+
+.back-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.chat-top {
+  background-color: #ced6e0;
+  min-height: 45px;
+}
+
+.chat-row-top {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+}
+
+.back-top {
+  background-color: #16a085;
+  height: 17vh;
+}
+
+.back-bottom {
+  background-color: #ced6e0;
+  height: 83vh;
+}
+
+.profile-image {
+  margin-top: 5px;
+  height: 35px;
+  width: 36px;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.contacts {
+  background-color: white;
+  min-height: 600px;
+}
+
+.table-scroll {
+  overflow-y: scroll;
+  height: 600px;
+}
+
+.message-area {
+  background-color: white;
+  min-height: 570px;
+}
+
+.message-area-scroll {
+  overflow-y: scroll;
+  height: 560px;
+}
+
+.message-area-bar {
+  background-color: #ced6e0;
+  margin: 0;
+  padding: 0;
+}

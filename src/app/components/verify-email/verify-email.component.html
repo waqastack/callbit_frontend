@@ -1,0 +1,31 @@
+<div class="login-card d-sm-flex min-vh-100">
+  <div class="right_panel order-sm-2 py-4">
+    <div *ngIf="!isLoading">
+      <div *ngIf="!isVerified">
+        <img height="120" src="assets/images/Verification-Failed.svg" />
+        <h3 class="text-primary fw-bold mt-5 my-3">
+          E-mail Verification Failed
+        </h3>
+        <!-- <p class="lead fw-bold">Try with Different Code</p> -->
+        <!-- <a href="./ForgotPassword-5.html" class="btn btn-primary btn-lg my-4">Resend Code</a> -->
+      </div>
+      <div *ngIf="isVerified">
+        <img height="120" src="assets/images/Verification-Confirmed.svg" />
+        <h3 class="text-primary fw-bold mt-5 my-3">
+          E-mail Verification Confirmed
+        </h3>
+        <p class="lead fw-bold">Your Email has been successfully registered.</p>
+        <a
+          [routerLink]="['/']"
+          routerLinkActive="router-link-active"
+          class="btn btn-primary btn-lg my-4"
+          >Go to Dashboard</a
+        >
+      </div>
+    </div>
+    <div *ngIf="isLoading">loading</div>
+  </div>
+  <div class="left_panel bg-light">
+    <img class="img-fluid" src="assets/images/signup-img2.png" />
+  </div>
+</div>

@@ -1,0 +1,553 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-light fixed-top befor-login bg-white py-3">
+      <div class="container">
+        <a class="navbar-brand pt-0" routerLink=""><img src="/assets/images/callbit-logo.svg"></a>
+       
+        
+        <div class="navbar-collapse">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+           
+          </ul>
+          <form class="d-flex">
+            <button class="btn btn-success btn-post" routerLink="/post" type="submit">Post A Campaign</button>
+            <ul class="navbar-nav mb-2 ms-3 flex-row mb-lg-0">
+              <li class="nav-item me-4 me-sm-2">
+                <a class="nav-link" routerLink="/signup"><i class="fas fa-user-plus me-1"></i>Sign Up</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/login"><i class="fas fa-sign-in-alt me-1"></i>Login</a>
+              </li>
+            </ul>
+          </form>
+        </div>
+      </div>
+  </nav>
+</header>
+
+<div class="section" style="padding-bottom: 3.5rem; margin-top: 80px;" data-aos="fade-up" data-aos-duration="1000">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+            <h1 class="fw-bold display-5 mb-4">
+              Find & Hire Call Centers and service providers who best suit you. 
+            </h1>
+            <h5 class="text-muted mb-sm-5">On a secure platform with global service <br class="d-md-block d-none"> providers.</h5>
+            
+              <!--<div class="alert alert-danger" *ngIf="noResult">No Results Found</div>
+  <div class="input-group mb-3 input-group-lg mt-4">
+
+    <input placeholder="What Campaign are you looking for?" aria-label="Recipient's username"
+           aria-describedby="basic-addon2" [(ngModel)]="selectedValue"
+           [typeahead]="compaign" (typeaheadNoResults)="typeaheadNoResults($event)" typeaheadOptionField="name" [typeaheadScrollable]="true"
+           (typeaheadOnSelect)="onSelect($event)" class="form-control">
+    <span (click)="searchCompaign()" class="input-group-text  text-white cursor-pointer bg-primary px-4 rounded-end" id="basic-addon2">
+      <i class="fas fa-search fa-lg"></i>
+    </span>
+
+  </div>
+  <ul class="list-unstyled landing seleted-option text-start d-sm-block d-none">
+    <li class="title">Popular :</li>
+    <li *ngFor="let p of popularKeywordLst"
+        style="cursor: pointer;"
+        (click)="popularfncValueGet(p)">
+      {{p.popularKeyword}}
+    </li>
+  </ul>-->
+           <div class="input-group mb-3 input-group-lg mt-4">
+              <input type="text" class="form-control border-primary border-secondary" id="myInput" (keyup)="loadCampaigns($event)" placeholder="Search for Campaign Name..">
+              <span class="input-group-text  text-white cursor-pointer px-4 bg-secondary border-secondary" id="basic-addon2"><i class="fas fa-search fa-lg"></i></span>
+            </div>
+              <ul id="myUL" *ngIf="showTextSuggestion">
+                <ng-container *ngIf="showSuggestion">
+                  <li *ngFor="let _camp of compaign"><a href="javascript:void(0)" (click)="onSelect(_camp.id)">{{_camp.name}}</a></li>
+                </ng-container>
+                <ng-container *ngIf="!showSuggestion">
+                  <li><a href="javascript:void(0)">No record found</a></li>
+                </ng-container>
+              </ul>
+              <ul class="list-unstyled landing seleted-option text-start d-sm-block d-none">
+                <li class="title">Popular :</li>
+                <li *ngFor="let p of popularKeywordLst"
+                    style="cursor: pointer;"
+                    (click)="popularfncValueGet(p)">
+                  {{p.popularKeyword}}
+                </li>
+              </ul>
+           
+      </div>
+      <div class="col-md-6"> 
+        <div class="banner-img position-relative rounded">
+          <img class="img-fluid image" src="/assets/images/banner/main-banner.png">
+          <div class="shape bg-soft-primary rellax d-md-block d-none" data-rellax-speed="0"></div>
+        </div>
+      </div>
+   </div>
+  </div>
+</div>
+
+<section  class="how-it-work">
+<div class="container" data-aos="fade-right" data-aos-duration="1000">
+
+  <div class="sub-title">
+    <h3>How Does it Work?</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="text-center">
+        <img class="mb-4" height="80" src="/assets/images/icons/work-1.svg">
+        <h5>
+          Post Your
+          <br>  Campaign
+        </h5>
+        <p class="text-muted">
+
+          Create an account and post a campaign. <br class="d-none d-lg-block">
+          Callbit helps you find the best call <br class="d-none d-lg-block">
+          centers for your needs.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 arrow">
+      <div class="text-center">
+        <img class="mb-4" height="80" src="/assets/images/icons/work-2.svg">
+
+        <h5>
+          Get Proposals from  <br class="d-none d-lg-block">
+          Call centers / Service providers
+        </h5>
+        <p class="text-muted">
+
+          Once you're done posting the campaign, you get   <br class="d-none d-lg-block">
+          proposals from experienced call centers or service <br class="d-none d-lg-block">
+          providers from all around the globe.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 arrow">
+      <div class="text-center">
+        <img class="mb-4" height="80" src="/assets/images/icons/work-3.svg">
+        <h5>
+          Choose Your   <br class="d-none d-lg-block">
+          Perfect Match
+        </h5>
+        <p class="text-muted">
+
+          Hire one or many call center service providers who  <br class="d-none d-lg-block"> best suit your campaign requirements <br class="d-none d-md-block">
+          and start working immediately.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<section data-aos="fade-up" data-aos-duration="1000">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-5"> 
+        <div class="banner-img position-relative rounded">
+          <img class="img-fluid image" src="/assets/images/banner/team-img.png">
+          <div class="shape bg-soft-primary rellax d-md-block d-none" data-rellax-speed="0"></div>
+        </div>
+      </div>
+       <div class="col-md-6 offset-md-1 mt-4 mt-sm-0">
+             <h3 class="fw-bold  mb-4">
+              Building Amazing Teams with On-Demand Talent
+             </h3>
+             <p class="text-muted lead mb-4 fw-normal">For call centers, finding legit campaigns and a trustable client is never easy. You have to take risks. </p>
+             <div class="card border-0 flex-row mt-5">
+                <div class="talent-icons me-3">
+                  <img height="35" src="/assets/images/icons/support.svg">
+                 </div>
+                 <div>
+                  <h6 class="text-primary fw-bold">24/7 support</h6>
+                  <p class="text-muted">
+                      Callbit team is available for 24 hours 
+                      for any complains and query.
+                  </p>
+                 </div>
+             </div>
+             <div class="card border-0 flex-row">
+              <div class="talent-icons me-3">
+                <img height="35" src="/assets/images/icons/protection.svg">
+               </div>
+               <div>
+                <h6 class="text-primary fw-bold">Global Network </h6>
+                <p class="text-muted">
+                  Our international network of call center and marketing service providers is at your fingertips.
+                </p>
+               </div>
+           </div>
+           <div class="card border-0 flex-row">
+            <div class="talent-icons me-3">
+              <img height="35" src="/assets/images/icons/protection.svg">
+             </div>
+             <div>
+              <h6 class="text-primary fw-bold">Payment Protection</h6>
+              <p class="text-muted">
+                Callbit offers 100% payment protection. If you don't get the desired output, you get a refund. 
+              </p>
+             </div>
+         </div>
+         <div class="card border-0 flex-row">
+          <div class="talent-icons me-3">
+            <img height="35" src="/assets/images/icons/fraud.svg">
+           </div>
+           <div>
+            <h6 class="text-primary fw-bold">Payment Protection</h6>
+            <p class="text-muted">
+              Callbit ensures there are no risks and frauds and your workflow is smooth with clients and call centers. 
+            </p>
+           </div>
+       </div>
+       </div>
+      
+    </div>
+   </div>
+</section> 
+
+
+ 
+
+
+<section class="bg-light">
+  <div class="container" data-aos="fade-up" data-aos-duration="1000">
+    <div class="sub-title text-center">
+        <h3>Most popular Campaigns on CallBit</h3>
+        <p class="mt-3 lead text-muted">A few of the most popular and trending campaigns on Callbit are listed down:</p>
+        
+    </div>
+
+
+<!-- owl-carousel -->
+
+<owl-carousel-o [options]="customOptions">
+  <ng-template carouselSlide *ngFor="let p of popularCompaignTrendLst">
+    <div class="slide" (click)="openRelatedCompaign(p.popularCompaign)">
+      <img [src]="p.imgSrc" alt="img 1">
+      <div class="owl-data">
+        <p>Top Trending</p>
+        <h4>{{p.popularCompaign}}</h4>
+      </div>
+
+    </div>
+  </ng-template>
+</owl-carousel-o>
+
+   
+  </div>
+</section> 
+
+
+  <section class="Testimonial-section  position-relative mb-4">
+  <div class="container"> 
+   <div class="sub-title mb-5 text-center">
+     <h3>Valued customers with valuable feedback</h3> 
+     <p class="mt-3 lead text-muted">Feedbacks from our happy users. Become one of them.</p>
+ </div>
+   <div id="TestimonialsSlider" class="carousel slide carousel-fade mt-5" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button aria-label="Slide 1" class="" data-bs-slide-to="0" data-bs-target="#TestimonialsSlider" type="button">
+      </button><button aria-label="Slide 2" class="" data-bs-slide-to="1" data-bs-target="#TestimonialsSlider" type="button"></button>
+      <button aria-label="Slide 3" class="active" data-bs-slide-to="2" data-bs-target="#TestimonialsSlider" type="button"></button>
+    </div>
+     <div class="carousel-inner">
+       <div class="carousel-item active">
+         
+         <div class="row px-5">
+           <div class="col-md-6">
+             <div class="d-flex">
+               <div class="clinet-avtar">
+                <img  src="/assets/images/testimonial-1.png">
+              </div>
+
+             
+              <div class="">
+               <ul class="list-unstyled rating mb-2">
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+             </ul>
+             <p class="">
+               <i>"I've been using callbit for more than a year and I must say I've never had such reliable service provider to work with. They've helped me out a lot"</i>
+             </p>
+             <p class="fw-bold">- Erich Marks</p>
+              </div>
+             </div>
+           </div>
+           <div class="col-md-6">
+             <div class="d-flex">
+              <img class="clinet-avtar" src="/assets/images/testimonial-2.png">
+              <div class="">
+               <ul class="list-unstyled rating mb-2">
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+             </ul>
+             <p class="">
+               <i>"I've been using callbit for more than a year and I must say I've never had such reliable service provider to work with. They've helped me out a lot"</i>
+             </p>
+             <p class="fw-bold">- Emily Hartman</p>
+              </div>
+             </div>
+           </div>
+         </div>
+ 
+       </div>
+       <div class="carousel-item">
+         <div class="row px-5">
+           <div class="col-md-6">
+             <div class="d-flex">
+              <div class="clinet-avtar">
+                <img  src="/assets/images/user-image.png">
+              </div>
+             
+              <div class="">
+               <ul class="list-unstyled rating mb-2">
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+             </ul>
+             <p class="">
+               <i>"I've been using callbit for more than a year and I must say I've never had such reliable service provider to work with. They've helped me out a lot"</i>
+             </p>
+             <p class="fw-bold">- Ehtisham</p>
+              </div>
+             </div>
+           </div>
+           <div class="col-md-6">
+             <div class="d-flex">
+              <img class="clinet-avtar" src="/assets/images/testimonial-3.png">
+              <div class="">
+               <ul class="list-unstyled rating mb-2">
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+             </ul>
+             <p class="">
+               <i>"I've been using callbit for more than a year and I must say I've never had such reliable service provider to work with. They've helped me out a lot"</i>
+             </p>
+             <p class="fw-bold">- Naveed</p>
+              </div>
+             </div>
+           </div>
+         </div>
+       </div>
+       <div class="carousel-item">
+         <div class="row px-5">
+           <div class="col-md-6">
+             <div class="d-flex">
+              <div class="clinet-avtar">
+                <img  src="/assets/images/user-image.png">
+              </div>
+             
+              <div class="">
+               <ul class="list-unstyled rating mb-2">
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+             </ul>
+             <p class="">
+               <i>"I've been using callbit for more than a year and I must say I've never had such reliable service provider to work with. They've helped me out a lot"</i>
+             </p>
+             <p class="fw-bold">- Michal</p>
+              </div>
+             </div>
+           </div>
+           <div class="col-md-6">
+             <div class="d-flex">
+              <div class="clinet-avtar">
+                <img  src="/assets/images/testimonial-4.png">
+              </div>
+            
+              <div class="">
+               <ul class="list-unstyled rating mb-2">
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+                 <li><i class="fas fa-star"></i></li>
+             </ul>
+             <p class="">
+               <i>"I've been using callbit for more than a year and I must say I've never had such reliable service provider to work with. They've helped me out a lot"</i>
+             </p>
+             <p class="fw-bold">- John Doe</p>
+              </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+    
+   </div>
+  </div>
+ 
+</section>  
+
+
+
+  <section class="payment-section">
+    <h3 class="text-center fw-bold mb-4">Why Callbit? </h3>
+   
+      <div class="container">
+         <div class="bg-light p-4 rounded">
+
+         
+          <div class="row">
+            <div class="col-sm-2 text-center">
+              <img height="120" src="/assets/images/large-logo.svg">
+            </div>
+              <div class="col-sm-10">
+                 
+                  <div id="carouselExampleCaptions" class="carousel slide carousel-callbit " data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    </div>
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <div class="carousel-caption text-default">
+                          <h5>Search Made Easy
+                          </h5>
+                          <p>Now, for the first time, connect your campaign to next generation contact centers from around the globe. Whether you’re hiring 100 affiliate marketing teams or an international BPO, the perfect match for your business’s next campaign will be found on Callbit.com Source service providers or inbound call leads from a network of call centers online and in minutes.</p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="carousel-caption text-default">
+                          <h5>Payment Protection</h5>
+                          <p>When a call center and a client connect directly, there are trust issues, including the primary concern as payment surety. Unlike such unsettling scenarios, Callbit offers a professional platform that secures you with 100% payment protection - Ultimately creating a stress-free, confident and smooth workflow between companies and call centers</p>
+                        </div>
+                      </div>
+                      
+                    </div>
+                   
+                  </div>
+                 
+                      
+              </div>
+          </div>
+        </div>
+        </div>
+  </section> 
+
+ <section class="">
+    <div class="container" data-aos="fade-up" data-aos-duration="1000">
+      <div class="row">
+          <div class="col-lg-6">
+              <h3 class="mb-4 fw-bold text-primary">Getting Campaign is <br>
+                never been easier</h3>
+             
+              <ul class="Campaign-detail list-unstyled">
+                <li><span><i class="fas fa-check"></i></span>
+                    <p>Callbit will help you find legit buyers and top campaigns to increase your revenue.
+                    </p>
+                </li>
+                <li><span><i class="fas fa-check"></i></span>
+                    <p>With a secure payment method, no more frauds and no pauses from the client's end.</p>
+                </li>
+                <li><span><i class="fas fa-check"></i></span>
+                    <p>Choose your high-performing campaign to run and elevate your customer experience.</p>
+                </li>
+                <li><span><i class="fas fa-check"></i></span>
+                  <p>Reviews/ratings from companies will help you get more professional campaigns and buyers.</p>
+              </li>
+               
+            </ul>
+            <button class="btn btn-primary" routerLink="/signup" >Start Now For Free</button>
+          </div>
+         
+         
+
+            
+          </div> 
+      </div>
+    
+  </section>  
+
+   <section class="">
+    <div class="container">
+      <h5 class="text-secondary">Know About</h5>
+      <h3 class="fw-bold text-primary">FAQ’s</h3>
+      <div class="accordion accordion-flush mt-4" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+              How do I sign up?
+            </button>
+          </h2>
+          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Whether you're searching for a call center or a campaign, signing up on Callbit is a simple process. Join by clicking the signup button on the top right corner and enter your email. Now add your user name and password to create an account. Select your user type and get set go!</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+              I want to buy calls, how will Callbit work for me?
+            </button>
+          </h2>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Join forces with experienced call centers on Callbit. Register yourself for "Post a campaign", and place your ad. Hire the best-suited proposal against your campaign post.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+              I am a call center, how will Callbit work for me?
+            </button>
+          </h2>
+          <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Callbit helps you connect with legit buyers eliminating any payment risks, pauses, and frauds. Register yourself as a Call Center. Bid for the campaign that best matches your interests and get hired. It's that simple!</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-heading4">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse4" aria-expanded="false" aria-controls="flush-collapseThree">
+              How secure is my transaction on Callbit?
+            </button>
+          </h2>
+          <div id="flush-collapse4" class="accordion-collapse collapse" aria-labelledby="flush-heading4" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Callbit is a unique marketplace specifically designed only for Call Centers & Companies. Our platform connects professionals on a reliable network to protect your leads' rewards</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> 
+
+  <section class="py-2 bg-secondary text-white">
+    <div class="container footer">
+      <div class="d-lg-flex align-items-center">
+       <p class="mb-0">© 2021 - The Callbit All Right Reserved</p> 
+       <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/home" >Find Call Centers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"  routerLink="/my" >Find Campaigns</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about" >About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/howItsWork" >How it Works</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link"  >Post a Campaign</a>
+        </li> -->
+      </ul>
+      </div>
+    </div>
+  </section> 
+  <ngx-spinner type="ball-spin-clockwise" size="medium"></ngx-spinner>
+  <button onclick="topFunction()" id="Scrolltop" title="Go to top"><i class="fas fa-angle-up"></i></button>

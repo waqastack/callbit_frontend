@@ -1,0 +1,153 @@
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #396697;
+}
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #155093;
+  }
+
+.text-area {
+  padding: .475rem .75rem;
+}
+
+.inner-section {
+  background-color: #F1F2F4;
+  height: calc(100vh - 76px);
+}
+
+
+
+.border-container {
+  position: relative;
+}
+
+.back-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.chat-top {
+  background-color: #ced6e0;
+  min-height: 45px;
+}
+
+.chat-row-top {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.back-top {
+  height: 17vh;
+}
+
+.profile-image {
+  margin-top: 5px;
+  height: 35px;
+  width: 36px;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.chat-members li {
+  border-bottom: solid 1px #eae3e3;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+  .chat-members li:hover {
+    background-color: #f4f4f7;
+  }
+
+.message-area {
+  min-height: 570px;
+}
+
+.message-card {
+  background-color: white;
+  border-radius: 4px;
+}
+
+.message-body {
+  overflow-y: auto;
+  height: calc(100vh - 264px);
+}
+
+.message-head {
+  border-bottom: solid 1px #e0d9d9;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.message-area-bar {
+  border-top: solid 1px #e0d9d9;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-members {
+  background-color: white;
+  border-radius: 4px;
+}
+
+  .chat-members .form-control {
+    border: none;
+    height: 50px;
+  }
+
+    .chat-members .form-control:focus {
+      box-shadow: none;
+    }
+
+.member-search {
+  border-bottom: solid 1px #e0d9d9;
+}
+
+.text-sent {
+  background-color: #c6daf7;
+  color: #585454;
+  padding: 12px 20px;
+  border-radius: 15px 15px 0 15px;
+  font-size: 15px;
+  margin-bottom: 0;
+  word-break: break-all;
+}
+
+.text-receive {
+  background-color: #e5e5ea;
+  color: #585454;
+  padding: 12px 20px;
+  border-radius: 15px 15px 15px 0;
+  font-size: 15px;
+  margin-bottom: 0;
+  word-break: break-all;
+}
+
+.card-sent {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.card-receive {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+}

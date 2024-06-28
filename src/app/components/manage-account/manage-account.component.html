@@ -1,0 +1,45 @@
+<app-header></app-header>
+<div class="inner-section">
+  <div class="container">
+
+
+
+
+
+    <div class="row mt-4">
+      <div class="col-lg-2">
+        <ul class="list-unstyled main-left-list">
+
+          <!-- <li>
+            <a class="me-auto" [ngClass]="accountComponent?'active':''" (click)="OpenComponent('account')">Account</a> <i class="fas fa-check-circle text-primary"></i>
+          </li> -->
+
+          <li>
+            <a class="me-auto" [ngClass]="securityComponent?'active':''" (click)="OpenComponent('security')">Security</a> <i class="fas fa-check-circle text-primary"></i>
+          </li>
+
+          <!-- <li>
+            <a class="me-auto" [ngClass]="accountComponent?'active':''" (click)="OpenComponent('account')">Account</a> <i class="fas fa-check-circle text-primary"></i>
+          </li> -->
+          <li><a class="me-auto" [ngClass]="paymentComponent?'active':''" (click)="OpenComponent('payment')">Payment</a> <i class="fas fa-check-circle text-primary"></i></li>
+        </ul>
+      </div>
+      <div class="col-lg-8">
+        <div *ngIf="accountComponent">
+          <app-account></app-account>
+        </div>
+        <div *ngIf="securityComponent">
+          <app-security></app-security>
+        </div>
+        <div *ngIf="formWComponent">
+          <app-form-w></app-form-w>
+        </div>
+        <div *ngIf="paymentComponent">
+          <app-payment></app-payment>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+

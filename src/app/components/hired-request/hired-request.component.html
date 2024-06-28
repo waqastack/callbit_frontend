@@ -1,0 +1,230 @@
+<app-header></app-header>
+<div class="inner-section">
+  <div class="container">
+    <div class="row mt-2">
+      <div class="offset-lg-2 col-lg-8">
+        <div class="card">
+          <div class="card-body nav-campaign p-0">
+            <div class="tab-content py-3" id="myTabContent">
+              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="card card-campaign">
+                  <div class="input-group inner-main-search">
+                    <input type="text" class="form-control" placeholder="Search Your Clients"
+                           name="search" [(ngModel)]="searchText" autocomplete="off"
+                           aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <span class="input-group-text bg-secondary text-white cursor-pointer px-4" id="basic-addon2"><i class="fas fa-search fa-lg"></i></span>
+                  </div>
+                  <!--<a [routerLink]="" (click)="InviteCoworkers()" class="mt-2">Advanced Search</a>-->
+                </div>
+                <div class="card card-campaign" *ngFor="let p of clientHiredRsp | filter:searchText">
+                  <div class="card-header d-flex bg-white border-0 px-0 pb-0 justify-content-between">
+                    <div>
+                      <h5 class="text-primary mb-0 fw-bold" (click)="ProfileHiredPopup(p)">
+                      {{p.clientName}}</h5>
+                      <small>
+                        {{p.createdDate | date : 'EEEE, MMMM d, h:mm' }} {{ p.createdDate | date : 'a' | lowercase }}
+                      </small>
+                    </div>
+                    <div *ngIf="p.hireStatus=='Hired Proposal Pending'" class="ms-auto d-flex mb-3">
+                      <button (click)="UpdateHiredStatus(p,'Hired Proposal Accepted')" class="btn btn-outline-primary me-2">
+                        Accept Proposal
+                      </button>
+                      <button (click)="UpdateHiredStatus(p.hiredID,'Hired Proposal Rejected')" class="btn btn-primary">Reject Proposal</button>
+                    </div>
+                    <div *ngIf="p.hireStatus=='Hired Proposal Accepted'" class="ms-auto d-flex mb-3">
+                      <button (click)="openMessages()" class="btn btn-outline-primary me-2">
+                        Message
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--PopUp Earning-->
+    <div class="popup">
+      <!-- <a href="javascript:void(0)" class="btn btn-outline-primary" data-toggle="modal" data-target="#basicModal">Compaign Detail</a> -->
+      <!-- modal -->
+      <div class="modal fade" id="MessagingModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <button type="button" class="close" (click)="ProposalModalClose()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="body-content">
+
+              <div class="card">
+                <div class="container chat-row-top">
+                  <div class="row chat-top">
+                    <div class="col-md-4 border-right border-dark">
+                      <input type="text" name="" class="form-control pt-1 mt-1" placeholder="Search a message">
+                    </div>
+                    <div class="col-md-8">
+                      <img src="../../../assets/images/avatar.jpg" alt="" class="profile-image rounded-circle">
+                      <span class="user-name ml-2 mt-2 ">
+                        {{selectedUser.email.split('@')[0]}}
+                      </span>
+                      <span class="float-right mt-2">
+                        <i class="fas fa-search mr-3"></i>
+                        <i class="fas fa-ellipsis-v mr-3"></i>
+
+
+                      </span>
+                    </div>
+
+                  </div>
+
+                  <!-- chat lower part start -->
+
+                  <div class="row">
+                    <div class="col-sm-4 contacts">
+                      <div class="table-scroll">
+                        <table class="table table-hover">
+
+                          <tbody>
+                            <tr *ngFor="let user of userList;let index=index;">
+                              <span (click)="onUserSelection(index)">
+                              <td>
+                                <img src="../../../assets/images/avatar.jpg" alt="" class="profile-image rounded-circle">
+                              </td>
+                              <td>{{user.email.split('@')[0]}} <small *ngIf="user.isConnected">online</small><br> </td>
+                              <!-- <td><small> {{user.time}}</small></td> -->
+                              </span>
+
+                            </tr>
+
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="col-sm-8 message-area">
+                      <div class="message-area-scroll">
+                        <table class="table">
+
+                          <tbody>
+                            <tr *ngFor="let app of chat.messages">
+                              <span *ngIf="roomDetail.from==app.from">
+                              <td>
+                                <small>
+                                  <p *ngIf="!app.message.includes('http')" class="bg-primary p-2 pt-2 mr-5 shadow-sm text-white float-left rounded">
+                                    {{app.message}}
+                                  </p>
+                                  <p *ngIf="app.message.includes('http')" class="bg-primary p-2 pt-2 mr-5 shadow-sm text-white float-left rounded" (click)="download(app.message)">
+                                    Download
+                                  </p>
+                                </small>
+                              </td>
+                              <td class="text-time float-right"><small> {{app.time}}</small></td>
+                              </span>
+                              <span *ngIf="roomDetail.from!=app.from">
+                              <td>
+                                <small>
+
+                                  <p *ngIf="!app.message.includes('http')" class="bg-success p-2 pt-2 ml-5 shadow-sm text-white float-right rounded">
+                                    {{app.message}}
+                                  </p>
+                                  <p *ngIf="app.message.includes('http')" class="bg-success p-2 pt-2 ml-5 shadow-sm text-white float-right rounded" (click)="download(app.message)">
+                                    Download
+                                  </p>
+                                </small>
+                              </td>
+                              <td class="text-time float-right"><small> {{app.time}}</small></td>
+                              </span>
+                            </tr>
+
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="row message-area-bar my-1 pt-2 pb-2">
+                        <div class="col-sm-2 mt-2">
+
+                          <label class="fas fa-paperclip text-primary edit-icon" for="file">
+                            <input type="file" id="file" #file accept="image/*" hidden
+                                   (change)="handleFileInput($event.target.files)">
+                          </label>
+                        </div>
+                        <div class="col-sm-8">
+
+                          <input type="text" (keyup.enter)="sendMessageToUser()" [(ngModel)]="message" name="" class="form-control" placeholder="Write a message">
+
+
+
+                        </div>
+                        <div class="col-sm-2 send-button pt-2">
+                          <a class="btn-sm btn-primary"
+                             (click)="sendMessageToUser()">Send</a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="popup">
+      <!-- <a href="javascript:void(0)" class="btn btn-outline-primary" data-toggle="modal" data-target="#basicModal">Compaign Detail</a> -->
+      <!-- modal -->
+      <div class="modal fade" id="EarningModalSubmimQst" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content" style="width:950px">
+            <button type="button" class="close" (click)="SubmitLeadQstModalClose()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="body-content" style="width:900px">
+
+              <div class="card">
+                <div class="bg-white card-header d-md-flex py-3 align-items-center">
+                  <div class="me-auto">
+                    <p class="fw-bold mb-1">{{comaignName}}</p>
+                    <p class="text-muted mb-0">
+                      {{createdDate | date : 'EEEE, MMMM d, h:mm' }} {{ createdDate | date : 'a' | lowercase }}
+                    </p>
+                  </div>
+                  <div class="client-pic me-3 mb-3 mb-md-0">
+                    <img [src]="profilePicture">
+                    <i class="fas fa-circle text-secondary online"></i>
+                  </div>
+                  <div class="mb-3 mb-md-0">
+                    <h3 class="text-primary fw-bold">{{clientName}}</h3>
+                    <div class="me-3 small">
+                      <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                      Pakistan
+                    </div>
+                  </div>
+
+                </div>
+
+
+
+
+                <div class="card-body p-3">
+                  <div class="form-group" *ngFor="let p of leadSubQstListSub">
+                    <label for="inputSuccess2">Q:{{p.leadSubQstID}} {{p.question}}</label>
+                    <textarea class="form-control" [(ngModel)]="p.answers"></textarea>
+                  </div>
+                </div>
+                <div class="card-footer p-3">
+                  <button class="btn btn-primary" (click)="SubmitAnswer()">Submit</button>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
